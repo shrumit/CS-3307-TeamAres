@@ -34,9 +34,9 @@ See all branches: `git branch`. The current branch that you are on will have an 
 
 You may also want to "assign" yourself or others on that Issue.
 
-**3. When you are done pushing your commits to your branch, make a Pull Request on Github. Reference your Pull Request in the Issue that it fixes**
+**3. When you are done pushing your commits to your branch, make a Pull Request on Github.**
 
-I think when a PR is accepted and merged, the branch disappears. We'll find out.
+When a PR is merged, the branch can be deleted. Reference the Issue that the PR fixes by using a hashtag.
 
 -------------
 #### Note on commit naming conventions -  use present-tense imperative.
