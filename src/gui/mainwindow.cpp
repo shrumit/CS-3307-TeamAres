@@ -1154,13 +1154,17 @@ bool MainWindow::load_fund(QString path, bool multi_file) {
 QString MainWindow::checkFileString(QString path){
     QString checkString = "";
     int i = 0;
+    int check = 0;
     for (i = 0; i <= 3; i++){
-        int check = checkFile(i,path);
+        check = checkFile(i,path);
         if (check == 0){
             break;
         }
     }
-    if(i == 0){
+    if(check == 1 & i == 4){
+        checkString = " You did not load a CSV File";
+    }
+    else if(i == 0){
         checkString = " You loaded a Teaching File";
     }
     else if(i == 1){
