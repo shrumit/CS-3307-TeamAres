@@ -185,6 +185,8 @@ void MainWindow::refresh(int tabIndex) {
     }
 }
 
+//Returns 0 if file specified by the filePath parameter is equal to the correct file type
+//Returns 1 if mistmatch
 int MainWindow::checkFile(int index, QString filePath) {
     CSVReader reader;
     std::vector<std::string> header;
@@ -985,7 +987,8 @@ bool MainWindow::load_teach(QString path, bool multi_file) {
         return true;
     } else {
         if (!multi_file) {
-            QMessageBox::critical(this, "Invalid File", "Not a valid teaching file.");
+            QString checkString = checkFileString(path);
+            QMessageBox::critical(this, "Invalid File", "Not a valid teaching file." + checkString);
             on_teach_load_file_clicked();
         }
     }
@@ -1036,7 +1039,8 @@ bool MainWindow::load_pub(QString path, bool multi_file) {
         return true;
     } else {
         if (!multi_file) {
-            QMessageBox::critical(this, "Invalid File", "Not a valid publications file.");
+            QString checkString = checkFileString(path);
+            QMessageBox::critical(this, "Invalid File", "Not a valid publications file." + checkString);
             on_pub_load_file_clicked();
         }
     }
@@ -1087,7 +1091,8 @@ bool MainWindow::load_pres(QString path, bool multi_file) {
         return true;
     } else {
         if (!multi_file) {
-            QMessageBox::critical(this, "Invalid File", "Not a valid presentations file.");
+            QString checkString = checkFileString(path);
+            QMessageBox::critical(this, "Invalid File", "Not a valid presentations file." + checkString);
             on_pres_load_file_clicked();
         }
     }
@@ -1138,12 +1143,40 @@ bool MainWindow::load_fund(QString path, bool multi_file) {
         return true;
     } else {
         if (!multi_file) {
-            QMessageBox::critical(this, "Invalid File", "Not a valid grants and funding file.");
+            QString checkString = checkFileString(path);
+            QMessageBox::critical(this, "Invalid File", "Not a valid grants and funding file." + checkString);
             on_fund_load_file_clicked();
         }
     }
     return false;
 }
+
+QString MainWindow::checkFileString(QString path){
+    QString checkString = "";
+    int i = 0;
+    for (i = 0; i <= 3; i++){
+        int check = checkFile(i,path);
+        if (check == 0){
+            break;
+        }
+    }
+    if(i == 0){
+        checkString = " You loaded a Teaching File";
+    }
+    else if(i == 1){
+        checkString = " You loaded a Publications File";
+    }
+    else if(i == 2){
+        checkString = " You loaded a Presentations File";
+    }
+    else if(i == 3){
+        checkString = " You loaded a Grants and Funding File";
+    }
+    return checkString;
+}
+
+
+
 
 void MainWindow::on_FromDate_dateChanged(const QDate &date) {
     // set the member variable to the new date

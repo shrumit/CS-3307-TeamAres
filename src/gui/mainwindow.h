@@ -133,6 +133,7 @@ private:
 
     int yearStart, yearEnd;
 
+    QString checkFileString(QString path);
     int checkFile(int index, QString filePath);
     //std::vector<std::string> getSelectedSortOrder(int tabIndex);
     void createDefaultSortOrder(int tabIndex);
