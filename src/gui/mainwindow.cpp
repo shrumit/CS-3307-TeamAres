@@ -1161,7 +1161,7 @@ QString MainWindow::checkFileString(QString path){
             break;
         }
     }
-    if(check == 1 & i == 4){
+    if(check == 1 && i == 4){
         checkString = " You did not load a CSV File";
     }
     else if(i == 0){
