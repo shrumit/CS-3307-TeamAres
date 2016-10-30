@@ -32,7 +32,7 @@
 std::vector<std::string> MainWindow::GRANTS_MANFIELDS = {"Member Name", "Funding Type", "Status", "Peer Reviewed?", "Role", "Title", "Start Date"};
 std::vector<std::string> MainWindow::PRES_MANFIELDS = {"Member Name", "Date", "Type", "Role", "Title"};
 std::vector<std::string> MainWindow::PUBS_MANFIELDS = {"Member Name", "Type", "Status Date", "Role", "Title"};
-std::vector<std::string> MainWindow::TEACH_MANFIELDS = {"Member Name", "Start Date", "Program"};
+std::vector<std::string> MainWindow::TEACH_MANFIELDS = {"Member Name", "Start Date", "Program", "Division"};
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow),
@@ -951,7 +951,7 @@ void MainWindow::on_teach_load_file_clicked() {
 }
 
 bool MainWindow::load_teach(QString path, bool multi_file) {
-    if (!checkFile(TEACH, path)) {
+    if (checkFile(TEACH, path) == EXIT_SUCCESS) {
         // enable gui elements
         ui->teach_sort->setEnabled(true);
         ui->teach_delete_sort->setEnabled(true);
@@ -1003,7 +1003,7 @@ void MainWindow::on_pub_load_file_clicked() {
 }
 
 bool MainWindow::load_pub(QString path, bool multi_file) {
-    if (!checkFile(PUBLICATIONS, path)) {
+    if (checkFile(PUBLICATIONS, path) == EXIT_SUCCESS) {
         // enable gui elements
         ui->pub_sort->setEnabled(true);
         ui->pub_delete_sort->setEnabled(true);
@@ -1055,7 +1055,7 @@ void MainWindow::on_pres_load_file_clicked() {
 }
 
 bool MainWindow::load_pres(QString path, bool multi_file) {
-    if (!checkFile(PRESENTATIONS, path)) {
+    if (checkFile(PRESENTATIONS, path) == EXIT_SUCCESS) {
         // enable gui elements
         ui->pres_sort->setEnabled(true);
         ui->pres_delete_sort->setEnabled(true);
@@ -1107,7 +1107,7 @@ void MainWindow::on_fund_load_file_clicked() {
 }
 
 bool MainWindow::load_fund(QString path, bool multi_file) {
-    if (!checkFile(FUNDING, path)) {
+    if (checkFile(FUNDING, path) == EXIT_SUCCESS) {
         // enable gui elements
         ui->fund_sort->setEnabled(true);
         ui->fund_delete_sort->setEnabled(true);
