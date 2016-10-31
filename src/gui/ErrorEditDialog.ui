@@ -55,16 +55,31 @@
     <widget class="QTableWidget" name="tableWidget"/>
    </item>
    <item row="2" column="2">
-    <widget class="QPushButton" name="FindPrev">
+    <widget class="QPushButton" name="findPrev">
+     <property name="minimumSize">
+      <size>
+       <width>95</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
-      <string>FindPrev</string>
+      <string>Previous</string>
      </property>
     </widget>
    </item>
    <item row="2" column="1">
-    <widget class="QPushButton" name="FindNext">
+    <widget class="QPushButton" name="findNext">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>95</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
-      <string>FindNext</string>
+      <string>Next</string>
      </property>
     </widget>
    </item>
