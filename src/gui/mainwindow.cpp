@@ -951,6 +951,19 @@ void MainWindow::on_teach_load_file_clicked() {
 }
 
 bool MainWindow::load_teach(QString path, bool multi_file) {
+
+    std::string fn = path.toUtf8().constData();
+
+        if(fn.substr(fn.find_last_of(".") + 1) == "csv") {
+
+        } else {
+
+           QMessageBox::critical(this, "Invalid File", "Invalid file type, please load csv file." + path);
+            on_teach_load_file_clicked();
+
+        }
+
+
     if (checkFile(TEACH, path) == EXIT_SUCCESS) {
         // enable gui elements
         ui->teach_sort->setEnabled(true);
@@ -1003,6 +1016,16 @@ void MainWindow::on_pub_load_file_clicked() {
 }
 
 bool MainWindow::load_pub(QString path, bool multi_file) {
+    std::string fn = path.toUtf8().constData();
+
+        if(fn.substr(fn.find_last_of(".") + 1) == "csv") {
+
+        } else {
+
+           QMessageBox::critical(this, "Invalid File", "Invalid file type, please load csv file." + path);
+            on_teach_load_file_clicked();
+
+        }
     if (checkFile(PUBLICATIONS, path) == EXIT_SUCCESS) {
         // enable gui elements
         ui->pub_sort->setEnabled(true);
@@ -1055,6 +1078,17 @@ void MainWindow::on_pres_load_file_clicked() {
 }
 
 bool MainWindow::load_pres(QString path, bool multi_file) {
+
+    std::string fn = path.toUtf8().constData();
+
+        if(fn.substr(fn.find_last_of(".") + 1) == "csv") {
+
+        } else {
+
+           QMessageBox::critical(this, "Invalid File", "Invalid file type, please load csv file." + path);
+            on_teach_load_file_clicked();
+
+        }
     if (checkFile(PRESENTATIONS, path) == EXIT_SUCCESS) {
         // enable gui elements
         ui->pres_sort->setEnabled(true);
@@ -1107,6 +1141,18 @@ void MainWindow::on_fund_load_file_clicked() {
 }
 
 bool MainWindow::load_fund(QString path, bool multi_file) {
+
+    std::string fn = path.toUtf8().constData();
+
+        if(fn.substr(fn.find_last_of(".") + 1) == "csv") {
+
+        } else {
+
+           QMessageBox::critical(this, "Invalid File", "Invalid file type, please load csv file." + path);
+            on_teach_load_file_clicked();
+
+        }
+
     if (checkFile(FUNDING, path) == EXIT_SUCCESS) {
         // enable gui elements
         ui->fund_sort->setEnabled(true);
