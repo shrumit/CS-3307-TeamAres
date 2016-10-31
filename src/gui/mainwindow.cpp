@@ -109,6 +109,36 @@ void MainWindow::on_actionLoad_file_triggered() {
                                                           "Select one or more files to load",
                                                           QDir::currentPath(),
                                                           tr("CSV (*.csv);; All files (*.*)"));
+
+    int count ;
+    count =filePaths.count();
+    if(filePaths.size()>0){
+        for(int i = 0; i < count; i++){
+
+            QString fnqstring = filePaths.at(i);
+            // converting qstring to string
+            std::string fnstring = fnqstring.toUtf8().constData();
+
+                if(fnstring.substr(fnstring.find_last_of(".") + 1) == "csv") {
+
+        goto proceed;
+         break;
+
+                }
+
+      //      QString checkString = checkFileString(fn);
+        QMessageBox::critical(this, "Invalid Filetype", "Please upload a csv file.This is not a csv file." );
+        //clearing out the path
+        filePaths.clear();
+        i=0;
+           on_actionLoad_file_triggered();
+
+        }
+    }
+
+
+    proceed:
+
     if (filePaths.size() > 0) {
         const int NUM_TABS = 4;
         bool all_loaded[NUM_TABS] = {false, false, false, false};
