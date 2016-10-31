@@ -268,7 +268,13 @@ int MainWindow::checkFile(int index, QString filePath) {
 
             for (unsigned int i = 0; i < PUBS_MANFIELDS.size() ; ++i) { //verify csv
                 if (std::find(header.begin(), header.end(), PUBS_MANFIELDS[i]) == header.end()) { //if entry from mandatory field vector missing, failure, invalid csv
-                    return EXIT_FAILURE;
+
+                    std::vector<std::string> expandedCols = {"Member Name", "Type", "Status Date *", "Role *", "Title"};
+                    for (unsigned int i = 0; i < expandedCols.size() ; ++i) {
+                        if (std::find(header.begin(), header.end(), expandedCols[i]) == header.end()) { //hotfix for Publications_expanded.csv having different colums
+                            return EXIT_FAILURE;
+                        }
+                    }
                 }
             }
 
