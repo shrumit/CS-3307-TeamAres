@@ -106,17 +106,17 @@ void ErrorEditDialog::on_save_clicked()
     }
 }
 
-void ErrorEditDialog::on_findNext_clicked()
-{
+//void ErrorEditDialog::on_findNext_clicked()
+//{
 
-}
+//}
 
-void ErrorEditDialog::on_findPrev_clicked()
-{
+//void ErrorEditDialog::on_findPrev_clicked()
+//{
 
-}
+//}
 
-void ErrorEditDialog::on_cancel_clicked()
-{
-    reject();
-}
+//void ErrorEditDialog::on_cancel_clicked()
+//{
+//    reject();
+//}
