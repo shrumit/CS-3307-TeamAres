@@ -207,22 +207,26 @@ int MainWindow::checkFile(int index, QString filePath) {
             delete teachdb;
             teachdb = new RecordsManager(&header);
 
+            for (unsigned int i = 0; i < TEACH_MANFIELDS.size() ; ++i) {
+                if (std::find(header.begin(), header.end(), TEACH_MANFIELDS[i]) == header.end()) { //if entry from mandatory field vector missing, failure, invalid csv
+                    return EXIT_FAILURE;
+                }
+            }
+
             // check for right file type by searching for unique header
-            searchstring = "Program";
-            if (std::find(header.begin(), header.end(), searchstring) != header.end()) {
-                // load in data into the manager, with the date as the key
-                sortHeaderIndex = teachdb->getHeaderIndex("Start Date");
-                teachData = reader.getData();
-                std::vector<std::vector<std::string>*> f_errs;
-                unsigned int j;
-                for (int i = 0; i < (int) teachData.size(); i++) {
-                    for (j = 0; j < TEACH_MANFIELDS.size(); j++) {
-                        int index = teachdb->getHeaderIndex(TEACH_MANFIELDS[j]);
-                        if (teachData[i][index].compare("") == 0) {
-                            f_errs.push_back(&teachData[i]);
-                            break;
-                        }
+            // load in data into the manager, with the date as the key
+            sortHeaderIndex = teachdb->getHeaderIndex("Start Date");
+            teachData = reader.getData();
+            std::vector<std::vector<std::string>*> f_errs;
+            unsigned int j;
+            for (int i = 0; i < (int) teachData.size(); i++) {
+                for (j = 0; j < TEACH_MANFIELDS.size(); j++) {
+                    int index = teachdb->getHeaderIndex(TEACH_MANFIELDS[j]);
+                    if (teachData[i][index].compare("") == 0) {
+                        f_errs.push_back(&teachData[i]);
+                        break;
                     }
+                 }
 
                     // if all mandatory fields are okay
                     if (j == TEACH_MANFIELDS.size()) {
@@ -243,9 +247,7 @@ int MainWindow::checkFile(int index, QString filePath) {
                         }
                     }
                 }
-            } else {
-                return EXIT_FAILURE;
-            }
+
         } else {
             return EXIT_SUCCESS;
         }
@@ -264,9 +266,12 @@ int MainWindow::checkFile(int index, QString filePath) {
             delete pubdb;
             pubdb = new RecordsManager(&header);
 
-            // check for right file type by searching for unique header
-            searchstring = "Publication Status";
-            if (std::find(header.begin(), header.end(), searchstring) != header.end()) {
+            for (unsigned int i = 0; i < PUBS_MANFIELDS.size() ; ++i) { //verify csv
+                if (std::find(header.begin(), header.end(), PUBS_MANFIELDS[i]) == header.end()) { //if entry from mandatory field vector missing, failure, invalid csv
+                    return EXIT_FAILURE;
+                }
+            }
+
                 // load in data into the manager, with the date as the key
                 sortHeaderIndex = pubdb->getHeaderIndex("Status Date");
                 pubData = reader.getData();
@@ -300,9 +305,7 @@ int MainWindow::checkFile(int index, QString filePath) {
                         }
                     }
                 }
-            } else {
-                return EXIT_FAILURE;
-            }
+
         } else {
             return EXIT_SUCCESS;
         }
@@ -321,9 +324,13 @@ int MainWindow::checkFile(int index, QString filePath) {
             delete presdb;
             presdb = new RecordsManager(&header);
 
-            // check for right file type by searching for unique header
-            searchstring = "Activity Type";
-            if (std::find(header.begin(), header.end(), searchstring) != header.end()) {
+            for (unsigned int i = 0; i < PRES_MANFIELDS.size() ; ++i) { //verify csv
+                if (std::find(header.begin(), header.end(), PRES_MANFIELDS[i]) == header.end()) { //if entry from mandatory field vector missing, failure, invalid csv
+                    return EXIT_FAILURE;
+                }
+            }
+
+
                 // load in data into the manager, with the date as the key
                 sortHeaderIndex = presdb->getHeaderIndex("Date");
                 presData = reader.getData();
@@ -358,9 +365,7 @@ int MainWindow::checkFile(int index, QString filePath) {
                         }
                     }
                 }
-            } else {
-                return EXIT_FAILURE;
-            }
+
         } else {
             return EXIT_SUCCESS;
         }
@@ -379,10 +384,12 @@ int MainWindow::checkFile(int index, QString filePath) {
             delete funddb;
             funddb = new RecordsManager(&header);
 
-            // check for right file type by searching for unique header
-            searchstring = "Funding Type";
+            for (unsigned int i = 0; i < GRANTS_MANFIELDS.size() ; ++i) { //verify csv
+                if (std::find(header.begin(), header.end(), GRANTS_MANFIELDS[i]) == header.end()) { //if entry from mandatory field vector missing, failure, invalid csv
+                    return EXIT_FAILURE;
+                }
+            }
 
-            if (std::find(header.begin(), header.end(), searchstring) != header.end()) {
                 // load in data into the manager, with the date as the key
                 sortHeaderIndex = funddb->getHeaderIndex("Start Date");
                 fundData = reader.getData();
@@ -422,9 +429,7 @@ int MainWindow::checkFile(int index, QString filePath) {
                         }
                     }
                 }
-            } else {
-                return EXIT_FAILURE;
-            }
+
         } else {
             return EXIT_SUCCESS;
         }

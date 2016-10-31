@@ -27,6 +27,15 @@
 *.exe
 *.out
 *.app
+<<<<<<< HEAD
 *.user
 *.user
 src/TeamPeach.pro.user
+=======
+
+# Build Folder
+src/TeamPeach.pro.user
+build-TeamPeach-Desktop_Qt_5_7_0_GCC_64bit-Debug/
+.gitignore~
+
+>>>>>>> issue12
