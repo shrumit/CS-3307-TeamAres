@@ -18,16 +18,6 @@
     <normaloff>:/icon32.ico</normaloff>:/icon32.ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="4">
-    <widget class="QTableWidget" name="tableWidget"/>
-   </item>
-   <item row="2" column="2">
-    <widget class="QPushButton" name="cancel">
-     <property name="text">
-      <string>Cancel</string>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="0">
     <spacer name="horizontalSpacer">
      <property name="orientation">
@@ -41,7 +31,14 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="1">
+   <item row="2" column="4">
+    <widget class="QPushButton" name="cancel">
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="3">
     <widget class="QPushButton" name="save">
      <property name="maximumSize">
       <size>
@@ -51,6 +48,23 @@
      </property>
      <property name="text">
       <string>Save</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="6">
+    <widget class="QTableWidget" name="tableWidget"/>
+   </item>
+   <item row="2" column="2">
+    <widget class="QPushButton" name="FindPrev">
+     <property name="text">
+      <string>FindPrev</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QPushButton" name="FindNext">
+     <property name="text">
+      <string>FindNext</string>
      </property>
     </widget>
    </item>
