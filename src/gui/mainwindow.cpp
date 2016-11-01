@@ -1169,7 +1169,7 @@ bool MainWindow::load_fund(QString path, bool multi_file) {
 
 QString MainWindow::checkFileString(QString path){
     QString checkString = "";
-    /*int i = 0;
+    int i = 0;
     int check = 0;
     for (i = 0; i <= 3; i++){
         check = checkFile(i,path);
@@ -1191,7 +1191,7 @@ QString MainWindow::checkFileString(QString path){
     }
     else if(i == 3){
         checkString = " You loaded a Grants and Funding File";
-    } */
+    }
     return checkString;
 }
 

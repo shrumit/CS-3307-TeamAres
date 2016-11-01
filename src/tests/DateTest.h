@@ -4,7 +4,7 @@
 #include <QtTest/QtTest>
 #include "QPushButton"
 #include "QTabWidget"
-//#include "QToolButton"
+#include "QToolButton"
 #include "iostream"
 #include "QDate"
 #include "QDateEdit"

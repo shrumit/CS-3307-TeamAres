@@ -23,7 +23,7 @@ private slots:
     void checkFileMismatchedType();
     void checkFileMissingMandatory();
     void checkFileMissingNonMandatory();
-    void checkDetectsMissingMandatoryCells();
+//  void checkDetectsMissingMandatoryCells();
     void checkDetectsTeach();
     void checkDetectsPub();
     void checkDetectsPres();

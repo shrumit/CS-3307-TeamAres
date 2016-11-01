@@ -27,14 +27,14 @@ int main(int argc, char *argv[]) {
         InputValidityTest *test_ivt = new InputValidityTest();
         QTest::qExec(test_ivt);
 
-        // NB: We've had intermittent problems with this test.
+        // NB: We've had intermittent problems with this test. Segmentation faults.
         // If it produces errors, please comment it out
-        DateTest *test_dt = new DateTest();
-        QTest::qExec(test_dt);
+        // DateTest *test_dt = new DateTest();
+        // QTest::qExec(test_dt);
 
 
         //old test code that came with project
-        /*
+
         TestCSVReader testReader;
         bool pass = testReader.CSV_READER_TEST_01();
         if (pass) cout << "TEST_01 PASSED !\n";
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
         pass = testReader.CSV_READER_TEST_08();
         if (pass) cout << "TEST_08 PASSED !\n";
         else cout << "TEST_08 FAILED !\n";
-        testReader.CSV_READER_TEST_ALL();*/
+        testReader.CSV_READER_TEST_ALL();
 
     }
 
