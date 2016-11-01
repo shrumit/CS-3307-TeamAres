@@ -13,7 +13,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "CustomSort.h"
-#include "ErrorEditDialog.h"
+//#include "ErrorEditDialog.h"
 
 #include "database/CSVReader.h"
 #include "database/QSortListIO.h"
@@ -108,7 +108,11 @@ void MainWindow::on_actionLoad_file_triggered() {
     QStringList filePaths = QFileDialog::getOpenFileNames(this,
                                                           "Select one or more files to load",
                                                           QDir::currentPath(),
-                                                          tr("CSV (*.csv);; All files (*.*)"));
+                                                            tr("CSV (*.csv)"));
+    loadFileUnspecifiedType(filePaths);
+}
+
+void MainWindow::loadFileUnspecifiedType(QStringList filePaths) {
     if (filePaths.size() > 0) {
         const int NUM_TABS = 4;
         bool all_loaded[NUM_TABS] = {false, false, false, false};
@@ -138,9 +142,10 @@ void MainWindow::on_actionLoad_file_triggered() {
  * is opened.  If a file name is successfully returned, makeTree()
  * is called.
  */
+//check here if filePath has a csv at the end of it.
 QString MainWindow::load_file() {
     QString filePath = QFileDialog::getOpenFileName(this, "Open File", QDir::currentPath(),
-                                                    tr("CSV (*.csv);; All files (*.*)"));
+                                                    tr("CSV (*.csv)"));
 
     if (!filePath.isEmpty()) {
         return filePath;
@@ -185,8 +190,7 @@ void MainWindow::refresh(int tabIndex) {
     }
 }
 
-//Returns 0 if file specified by the filePath parameter is equal to the correct file type
-//Returns 1 if mistmatch
+
 int MainWindow::checkFile(int index, QString filePath) {
     CSVReader reader;
     std::vector<std::string> header;
@@ -555,8 +559,9 @@ bool MainWindow::handle_field_errors(std::vector<std::vector<std::string>*>& err
 
     switch (ret) {
     case QMessageBox::Yes: {
-        ErrorEditDialog diag(this, err, headers, mandatory);
-        if(diag.exec()) {
+        diag = new ErrorEditDialog(this, err, headers, mandatory);
+        if(diag->exec()) {
+
             return true;
         }
         return false;
@@ -1164,7 +1169,7 @@ bool MainWindow::load_fund(QString path, bool multi_file) {
 
 QString MainWindow::checkFileString(QString path){
     QString checkString = "";
-    int i = 0;
+    /*int i = 0;
     int check = 0;
     for (i = 0; i <= 3; i++){
         check = checkFile(i,path);
@@ -1186,7 +1191,7 @@ QString MainWindow::checkFileString(QString path){
     }
     else if(i == 3){
         checkString = " You loaded a Grants and Funding File";
-    }
+    } */
     return checkString;
 }
 

@@ -4,7 +4,8 @@
 #include <string>
 #include <QMainWindow>
 #include <vector>
-
+#include "ErrorEditDialog.h"
+#include "../tests/InputValidityTest.h"
 
 class RecordsManager;
 class CSVReader;
@@ -23,6 +24,9 @@ namespace Ui {
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
+
+    friend class InputValidityTest;
+
 
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -44,6 +48,7 @@ private slots:
     void on_fund_new_sort_clicked();
 
     void on_actionLoad_file_triggered();
+    void loadFileUnspecifiedType(QStringList filePaths);
 
     void on_FromDate_dateChanged(const QDate &date);
     void on_ToDate_dateChanged(const QDate &date);
@@ -112,6 +117,8 @@ private:
 
     Ui::MainWindow* ui;
     QPrinter* printer;
+
+    ErrorEditDialog* diag;
 
     QList<QStringList> allTeachOrders, allPubOrders, allPresOrders, allFundOrders;
     QString teachPath, pubPath, presPath, fundPath;

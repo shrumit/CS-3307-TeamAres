@@ -4,6 +4,7 @@
 #
 #-------------------------------------------------
 
+QT              += testlib
 QT              += core gui
 CONFIG          += c++11
 
@@ -30,7 +31,10 @@ HEADERS += \
     datamodel/GrantFundingTreeModel.h \
     datamodel/TeachingTreeModel.h \
     database/TestCSVReader.h \
-    gui/qcustomplot.h
+    gui/qcustomplot.h \
+    tests/FileLoadTest.h \
+    tests/InputValidityTest.h \
+    tests/DateTest.h
 
 
 SOURCES += \
@@ -49,7 +53,10 @@ SOURCES += \
     datamodel/GrantFundingTreeModel.cpp \
     datamodel/TeachingTreeModel.cpp \
     database/TestCSVReader.cpp \
-    gui/qcustomplot.cpp
+    gui/qcustomplot.cpp \
+    tests/InputValidityTest.cpp \
+    tests/FileLoadTest.cpp \
+    tests/DateTest.cpp
 
 FORMS += \
     gui/customsort.ui \
