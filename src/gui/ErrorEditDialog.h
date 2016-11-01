@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <vector>
 #include <string>
+#include <set>
+#include <tuple>
 
 class QAbstractButton;
 
@@ -25,14 +27,18 @@ public:
 private slots:
      void on_save_clicked();
      void on_cancel_clicked();
+     void on_findNext_clicked();
+     void on_findPrev_clicked();
 
 private:
     std::vector<std::vector<std::string>*> errorList;
     std::vector<std::string> headerList;
     std::vector<std::string> mandatoryList;
+    std::set<std::tuple<int,int>> error_cells;
     Ui::ErrorEditDialog *ui;
 
     void saveData();
+    void nextprevHandler(bool next);
 };
 
 #endif // ERROREDITDIALOG_H

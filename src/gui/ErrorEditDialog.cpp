@@ -28,6 +28,7 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
     mandatoryList(mandatory),
     ui(new Ui::ErrorEditDialog)
 {
+
     ui->setupUi(this);
     ui->tableWidget->setRowCount((int) errors.size());
     ui->tableWidget->setColumnCount((int) headers.size());
@@ -53,6 +54,8 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
                         && (*it)->at(col).compare("") == 0) {
                     item->setBackground(brush);
                     item->setFlags(flag);
+                    // qDebug() << "E:" << col << "," << row;
+                    error_cells.insert(std::make_tuple(row,col));
                 }
             }
             ui->tableWidget->setItem(row, col, item);
@@ -106,15 +109,48 @@ void ErrorEditDialog::on_save_clicked()
     }
 }
 
-//void ErrorEditDialog::on_findNext_clicked()
-//{
+void ErrorEditDialog::on_findNext_clicked()
+{
+    nextprevHandler(true);
+}
 
-//}
+void ErrorEditDialog::on_findPrev_clicked()
+{
+    nextprevHandler(false);
+}
 
-//void ErrorEditDialog::on_findPrev_clicked()
-//{
+// Selects next or previous cell
+void ErrorEditDialog::nextprevHandler(bool next)
+{
+    // get current cell
+    int row = ui->tableWidget->currentRow();
+    int col = ui->tableWidget->currentColumn();
+    std::set<std::tuple<int,int>>::iterator it;
 
-//}
+    // get successsor/predecessor to current cell in error_cells
+    if (row == -1) {
+        it = error_cells.begin();
+    } else {
+        it = error_cells.find(std::make_tuple(row,col));
+        if (next) {
+            it++;
+            if (it == error_cells.end())
+                it = error_cells.begin(); // loop to begin
+        }
+        else {
+            if (it == error_cells.begin())
+                it = error_cells.end(); // loop to end
+            it--;
+        }
+    }
+
+    // set new current cell
+    int nrow = std::get<0>(*it);
+    int ncol = std::get<1>(*it);
+    QTableWidgetItem* item = ui->tableWidget->item(nrow, ncol);
+    ui->tableWidget->scrollToItem(item);
+    ui->tableWidget->setCurrentItem(item);
+}
 
 void ErrorEditDialog::on_cancel_clicked()
 {
