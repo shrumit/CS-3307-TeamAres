@@ -6,6 +6,9 @@
 #include "gui/mainwindow.h"
 #include "database/TestCSVReader.h"
 
+#include "tests/FileLoadTest.h"
+#include "tests/InputValidityTest.h"
+#include "tests/DateTest.h"
 
 using namespace std;
 
