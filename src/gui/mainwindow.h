@@ -5,7 +5,6 @@
 #include <QMainWindow>
 #include <vector>
 #include "ErrorEditDialog.h"
-#include "../tests/InputValidityTest.h"
 
 class RecordsManager;
 class CSVReader;
