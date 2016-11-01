@@ -13,12 +13,12 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    int test = 0;   /* test off when  0 */
+    int test = 1;   /* test off when  0 */
     QApplication app(argc, argv);
     MainWindow w;
 
     if (test) {
-        /*
+
         FileLoadTest *test_flt = new FileLoadTest();
         QTest::qExec(test_flt);
 
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
         // If it produces errors, please comment it out
         DateTest *test_dt = new DateTest();
         QTest::qExec(test_dt);
-        */
+
 
         //old test code that came with project
         /*
