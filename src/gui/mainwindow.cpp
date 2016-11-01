@@ -34,6 +34,7 @@ std::vector<std::string> MainWindow::PRES_MANFIELDS = {"Member Name", "Date", "T
 std::vector<std::string> MainWindow::PUBS_MANFIELDS = {"Member Name", "Type", "Status Date", "Role", "Title"};
 std::vector<std::string> MainWindow::TEACH_MANFIELDS = {"Member Name", "Start Date", "Program", "Division"};
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow),
     fundTree(NULL), presTree(NULL), pubTree(NULL), teachTree(NULL),
