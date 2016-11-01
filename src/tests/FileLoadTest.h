@@ -14,6 +14,10 @@ private slots:
     void loadPublications();
     void loadPresentations();
     void loadTeaching();
+    void teachingMandatoryCols();
+    void presentationMandatoryCols();
+    void grantsMandatoryCols();
+    void publicationsMandatoryCols();
 };
 
 
