@@ -566,7 +566,7 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
         // check that the top-level value passes our filter before adding it
         if (topLevelValue[0] == '*' && filterStart == '*') {
-            if (searchWord.at(0) == '\000' || searchWord.at(0) == '*'){
+            if (searchWord == "" || searchWord.at(0) == '*'){
                 sortedTree.emplace(topLevelValue, records[x]);
             }
             else{
@@ -590,7 +590,7 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
             }
 
         } else if (filterStart <= (topLevelValue[0] & ~0x20) && (topLevelValue[0] & ~0x20) <= filterEnd) {
-            if (searchWord.at(0) == '\000' || searchWord.at(0) == '*'){
+            if (searchWord == "" || searchWord.at(0) == '*'){
                 sortedTree.emplace(topLevelValue, records[x]);
             }
             else{

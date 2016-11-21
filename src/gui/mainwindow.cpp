@@ -1603,16 +1603,16 @@ std::string MainWindow::getSearchWord(int type){
     std::string strInField;
     switch (type) {
     case FUNDING:
-        strInField = ui->fund_search_bar->text().toStdString()[0];
+        strInField = ui->fund_search_bar->text().toStdString();
         break;
     case PRESENTATIONS:
-        strInField = ui->pres_search_bar->text().toStdString()[0];
+        strInField = ui->pres_search_bar->text().toStdString();
         break;
     case PUBLICATIONS:
-        strInField = ui->pub_search_bar->text().toStdString()[0];
+        strInField = ui->pub_search_bar->text().toStdString();
         break;
     case TEACH:
-        strInField = ui->teach_search_bar->text().toStdString()[0];
+        strInField = ui->teach_search_bar->text().toStdString();
         break;
     }
 
