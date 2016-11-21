@@ -8,7 +8,7 @@ class PresentationTreeModel : public TreeModel
 public:
     PresentationTreeModel(RecordsManager*, QObject *parent = 0);
     ~PresentationTreeModel();
-    void setupModel(int start, int end, std::vector<std::string> sortFields, char filterStart, char filterEnd);
+    void setupModel(int start, int end, std::vector<std::string> sortFields, char filterStart, char filterEnd, std::string searchWord);
 };
 
 #endif // PRESENTATIONTREEMODEL_H

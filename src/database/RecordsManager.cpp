@@ -136,8 +136,8 @@ std::vector<std::string> RecordsManager::list(int n, ...) {
  * @return              a formatted QString to be used directly in the creation
  *                      of a TreeModel
  */
-QString RecordsManager::createQStringForGrants(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd) {
-    QString s = QString(analyze(startYear, endYear, sortFields, list(1, "Total Amount"), 0x1, sortFields.back(), filterStart, filterEnd).c_str());
+QString RecordsManager::createQStringForGrants(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord) {
+    QString s = QString(analyze(startYear, endYear, sortFields, list(1, "Total Amount"), 0x1, sortFields.back(), filterStart, filterEnd, searchWord).c_str());
     return s;
 }
 
@@ -162,8 +162,8 @@ QList<QVariant> RecordsManager::createHeadersListForGrants(std::string topLevel)
  * @return              a formatted QString to be used directly in the creation
  *                      of a TreeModel
  */
-QString RecordsManager::createQStringForPres(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd) {
-    return QString(analyze(startYear, endYear, sortFields, sortFields.back(), filterStart, filterEnd).c_str());
+QString RecordsManager::createQStringForPres(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord) {
+    return QString(analyze(startYear, endYear, sortFields, sortFields.back(), filterStart, filterEnd, searchWord).c_str());
 }
 
 /**
@@ -187,8 +187,8 @@ QList<QVariant> RecordsManager::createHeadersListForPres(std::string topLevel) {
  * @return              a formatted QString to be used directly in the creation
  *                      of a TreeModel
  */
-QString RecordsManager::createQStringForPubs(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd) {
-    return QString(analyze(startYear, endYear, sortFields, sortFields.back(), filterStart, filterEnd).c_str());
+QString RecordsManager::createQStringForPubs(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord) {
+    return QString(analyze(startYear, endYear, sortFields, sortFields.back(), filterStart, filterEnd, searchWord).c_str());
 }
 
 /**
@@ -212,8 +212,8 @@ QList<QVariant> RecordsManager::createHeadersListForPubs(std::string topLevel) {
  * @return              a formatted QString to be used directly in the creation
  *                      of a TreeModel
  */
-QString RecordsManager::createQStringForTeaching(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd) {
-    return QString(analyze(startYear, endYear, sortFields, list(2, "Total Hours", "Number Of Trainees"), 0x0, sortFields.back(), filterStart, filterEnd).c_str());
+QString RecordsManager::createQStringForTeaching(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord) {
+    return QString(analyze(startYear, endYear, sortFields, list(2, "Total Hours", "Number Of Trainees"), 0x0, sortFields.back(), filterStart, filterEnd, searchWord).c_str());
 }
 
 /**
@@ -237,11 +237,11 @@ QList<QVariant> RecordsManager::createHeadersListForTeaching(std::string topLeve
  * @param filterEnd     the end of a character range with which to filter the top-level by
  * @return              a vector of tuples containing the member name and its count
  */
-std::vector<std::pair<std::string, int>> RecordsManager::getCountByName(int startYear, int endYear, char filterStart, char filterEnd) {
+std::vector<std::pair<std::string, int>> RecordsManager::getCountByName(int startYear, int endYear, char filterStart, char filterEnd, std::string searchWord) {
     std::vector<std::pair < std::string, int>> ret;
 
     // query the database
-    std::string query = analyze(startYear, endYear, list(1, "Member Name"), list(0), 0, "Member Name", filterStart, filterEnd);
+    std::string query = analyze(startYear, endYear, list(1, "Member Name"), list(0), 0, "Member Name", filterStart, filterEnd, searchWord);
 
     // interpret the result string
     size_t pos = 0, index;
@@ -283,11 +283,11 @@ std::vector<std::pair<std::string, int>> RecordsManager::getCountByName(int star
  * @param filterEnd     the end of a character range with which to filter the top-level by
  * @return              a vector of tuples containing a member's count types and their counts
  */
-std::vector<std::pair<std::string, int>> RecordsManager::getCountTuple(int startYear, int endYear, const std::vector<std::string> &headers, const std::vector<std::string> &matchStrings, char filterStart, char filterEnd) {
+std::vector<std::pair<std::string, int>> RecordsManager::getCountTuple(int startYear, int endYear, const std::vector<std::string> &headers, const std::vector<std::string> &matchStrings, char filterStart, char filterEnd, std::string searchWord) {
     std::vector<std::pair < std::string, int>> ret;
 
     // query the database
-    std::string query = analyze(startYear, endYear, headers, headers.back(), filterStart, filterEnd);
+    std::string query = analyze(startYear, endYear, headers, headers.back(), filterStart, filterEnd, searchWord);
 
     size_t pos = 0, depth = 0, index;
     int totalCount;
@@ -371,11 +371,11 @@ std::vector<std::pair<std::string, int>> RecordsManager::getCountTuple(int start
  * @param filterEnd     the end of a character range with which to filter the top-level by
  * @return              a vector of tuples containing a member's accumulator types and their totals
  */
-std::vector<std::pair<std::string, double>> RecordsManager::getTotalsTuple(int startYear, int endYear, const std::vector<std::string> &headers, const std::vector<std::string> &matchStrings, std::string accCol, char filterStart, char filterEnd) {
+std::vector<std::pair<std::string, double>> RecordsManager::getTotalsTuple(int startYear, int endYear, const std::vector<std::string> &headers, const std::vector<std::string> &matchStrings, std::string accCol, char filterStart, char filterEnd, std::string searchWord) {
     std::vector<std::pair < std::string, double>> ret;
 
     // query the database
-    std::string query = analyze(startYear, endYear, headers, list(1, accCol.c_str()), 0x0, headers.back(), filterStart, filterEnd);
+    std::string query = analyze(startYear, endYear, headers, list(1, accCol.c_str()), 0x0, headers.back(), filterStart, filterEnd, searchWord);
 
     // interpret the result string
     size_t pos = 0, depth = 0, index;
@@ -512,8 +512,8 @@ std::string RecordsManager::removeTrailingZeros(double d) {
  * @param filterEnd     the end of a character range with which to filter the top-level by
  * @return              a formatted string with the analysis, can be used for TreeModel
  */
-std::string RecordsManager::analyze(int startYear, int endYear, const std::vector<std::string> &sortFields, std::string countCol, char filterStart, char filterEnd) {
-    return analyze(startYear, endYear, sortFields, list(0), 0, countCol, filterStart, filterEnd);
+std::string RecordsManager::analyze(int startYear, int endYear, const std::vector<std::string> &sortFields, std::string countCol, char filterStart, char filterEnd, std::string searchWord) {
+    return analyze(startYear, endYear, sortFields, list(0), 0, countCol, filterStart, filterEnd, searchWord);
 }
 
 /**
@@ -530,10 +530,11 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
  * @param countCol      the header name of the column to count totals for
  * @param filterStart   the start of a character range with which to filter the top-level by
  * @param filterEnd     the end of a character range with which to filter the top-level by
+ * @param searchWord    the word that is to be contained in entries of the top-level
  * @return              a formatted string with the analysis, can be used for TreeModel
  */
 std::string RecordsManager::analyze(int startYear, int endYear, const std::vector<std::string> &sortFields, const std::vector<std::string> &accs,
-        int currencyMask, std::string countCol, char filterStart, char filterEnd) {
+        int currencyMask, std::string countCol, char filterStart, char filterEnd, std::string searchWord) {
     std::string ret;
     int sum = 0;
     std::vector<BasicRecord*> records = findRecordsInRange(startYear, endYear);
@@ -565,9 +566,53 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
         // check that the top-level value passes our filter before adding it
         if (topLevelValue[0] == '*' && filterStart == '*') {
-            sortedTree.emplace(topLevelValue, records[x]);
+            if (searchWord.at(0) == '\000' || searchWord.at(0) == '*'){
+                sortedTree.emplace(topLevelValue, records[x]);
+            }
+            else{
+            for(int i = 0; i < topLevelValue.size(); i++){
+                int c = i;
+                int z = 0;
+                 while(z < searchWord.length()){
+                if (toupper(topLevelValue[i]) == toupper(searchWord.at(z))){
+                    if (z == (searchWord.length() - 1)){
+                        sortedTree.emplace(topLevelValue, records[x]);
+                    }
+                    z++;
+                    i++;
+                }
+                else {
+                    z=99999;
+                }
+        }
+                 i = c;
+            }
+            }
+
         } else if (filterStart <= (topLevelValue[0] & ~0x20) && (topLevelValue[0] & ~0x20) <= filterEnd) {
-            sortedTree.emplace(topLevelValue, records[x]);
+            if (searchWord.at(0) == '\000' || searchWord.at(0) == '*'){
+                sortedTree.emplace(topLevelValue, records[x]);
+            }
+            else{
+            for(int i = 0; i < topLevelValue.size(); i++){
+                int c = i;
+                int z = 0;
+                while(z < searchWord.length()){
+
+            if (toupper(topLevelValue[i]) == toupper(searchWord.at(z))){
+                if (z == (searchWord.length() - 1)){
+                    sortedTree.emplace(topLevelValue, records[x]);
+                }
+                i++;
+                z++;
+            }
+            else{
+                z = 999999;
+            }
+            }
+                i = c;
+            }
+        }
         }
     }
 

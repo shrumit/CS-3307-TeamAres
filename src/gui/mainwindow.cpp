@@ -589,7 +589,7 @@ void MainWindow::makeTree(int tabIndex) {
         currentView = ui->teachTreeView;
 
         // analyze the data into a tree
-        currentTree->setupModel(yearStart, yearEnd, teachSortOrder, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+        currentTree->setupModel(yearStart, yearEnd, teachSortOrder, getFilterStartChar(TEACH), getFilterEndChar(TEACH), getSearchWord(TEACH));
 
         ui->teach_pie_button->toggle();
 
@@ -606,7 +606,7 @@ void MainWindow::makeTree(int tabIndex) {
         currentView = ui->pubTreeView;
 
         // analyze the data into a tree
-        currentTree->setupModel(yearStart, yearEnd, pubSortOrder, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS));
+        currentTree->setupModel(yearStart, yearEnd, pubSortOrder, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS), getSearchWord(PUBLICATIONS));
 
         ui->pub_pie_button->toggle();
 
@@ -623,7 +623,7 @@ void MainWindow::makeTree(int tabIndex) {
         currentView = ui->presTreeView;
 
         // analyze the data into a tree
-        currentTree->setupModel(yearStart, yearEnd, presSortOrder, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS));
+        currentTree->setupModel(yearStart, yearEnd, presSortOrder, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS), getSearchWord(PRESENTATIONS));
 
         ui->pres_pie_button->toggle();
 
@@ -640,7 +640,7 @@ void MainWindow::makeTree(int tabIndex) {
         currentView = ui->fundTreeView;
 
         // analyze the data into a tree
-        currentTree->setupModel(yearStart, yearEnd, fundSortOrder, getFilterStartChar(FUNDING), getFilterEndChar(FUNDING));
+        currentTree->setupModel(yearStart, yearEnd, fundSortOrder, getFilterStartChar(FUNDING), getFilterEndChar(FUNDING), getSearchWord(FUNDING));
 
         ui->fund_pie_button->toggle();
 
@@ -1253,7 +1253,7 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
         teachClickedName = clickedName;
         std::vector<std::string> sortOrder(teachSortOrder.begin(), teachSortOrder.begin()+parentsList.size()+1);
         std::vector<std::pair <std::string, int>> list =
-                teachdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+                teachdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH), getSearchWord(TEACH));
         std::vector<std::pair <std::string, double>> chartList;
         for (int i = 0; i < (int) list.size(); i++) {
             chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
@@ -1303,7 +1303,7 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
         pubClickedName = clickedName;
         std::vector<std::string> sortOrder(pubSortOrder.begin(), pubSortOrder.begin()+parentsList.size()+1);
         std::vector<std::pair <std::string, int>> list =
-                pubdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS));
+                pubdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS), getSearchWord(PUBLICATIONS));
         std::vector<std::pair <std::string, double>> chartList;
         for (int i = 0; i < (int) list.size(); i++) {
             chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
@@ -1353,7 +1353,7 @@ void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
         presClickedName = clickedName;
         std::vector<std::string> sortOrder(presSortOrder.begin(), presSortOrder.begin()+parentsList.size()+1);
         std::vector<std::pair <std::string, int>> list =
-                presdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS));
+                presdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS), getSearchWord(PRESENTATIONS));
         std::vector<std::pair <std::string, double>> chartList;
         for (int i = 0; i < (int) list.size(); i++) {
             chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
@@ -1404,7 +1404,7 @@ void MainWindow::on_fundTreeView_clicked(const QModelIndex &index) {
             fundClickedName = clickedName;
             std::vector<std::string> sortOrder(fundSortOrder.begin(), fundSortOrder.begin()+parentsList.size()+1);
             std::vector<std::pair <std::string, double>> chartList =
-                    funddb->getTotalsTuple(yearStart, yearEnd, sortOrder, parentsList, "Total Amount", getFilterStartChar(FUNDING), getFilterEndChar(FUNDING));
+                    funddb->getTotalsTuple(yearStart, yearEnd, sortOrder, parentsList, "Total Amount", getFilterStartChar(FUNDING), getFilterEndChar(FUNDING), getSearchWord(FUNDING));
 
             if (!chartList.empty()) {
                 ui->fundBarChart->clearPlottables();
@@ -1599,15 +1599,38 @@ char MainWindow::getFilterEndChar(int type) {
         return 'Z';
     }
 }
+std::string MainWindow::getSearchWord(int type){
+    std::string strInField;
+    switch (type) {
+    case FUNDING:
+        strInField = ui->fund_search_bar->text().toStdString()[0];
+        break;
+    case PRESENTATIONS:
+        strInField = ui->pres_search_bar->text().toStdString()[0];
+        break;
+    case PUBLICATIONS:
+        strInField = ui->pub_search_bar->text().toStdString()[0];
+        break;
+    case TEACH:
+        strInField = ui->teach_search_bar->text().toStdString()[0];
+        break;
+    }
+
+    return strInField;
+}
 
 void MainWindow::on_teach_filter_from_textChanged() { refresh(TEACH);}
 void MainWindow::on_teach_filter_to_textChanged() { refresh(TEACH);}
+void MainWindow::on_teach_search_bar_textChanged() { refresh(TEACH);}
 void MainWindow::on_pub_filter_from_textChanged() { refresh(PUBLICATIONS);}
 void MainWindow::on_pub_filter_to_textChanged() { refresh(PUBLICATIONS);}
+void MainWindow::on_pub_search_bar_textChanged() { refresh(PUBLICATIONS);}
 void MainWindow::on_pres_filter_from_textChanged() { refresh(PRESENTATIONS);}
 void MainWindow::on_pres_filter_to_textChanged() { refresh(PRESENTATIONS);}
+void MainWindow::on_pres_search_bar_textChanged() { refresh(PRESENTATIONS);}
 void MainWindow::on_fund_filter_from_textChanged() { refresh(FUNDING);}
 void MainWindow::on_fund_filter_to_textChanged() { refresh(FUNDING);}
+void MainWindow::on_fund_search_bar_textChanged() { refresh(FUNDING);}
 
 
 

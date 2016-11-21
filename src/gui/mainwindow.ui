@@ -236,7 +236,7 @@ p, li { white-space: pre-wrap; }
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>3</number>
+          <number>0</number>
          </property>
          <property name="usesScrollButtons">
           <bool>false</bool>
@@ -817,7 +817,23 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item row="3" column="6">
-            <widget class="QLineEdit" name="SearchBarTeach"/>
+            <widget class="QLineEdit" name="teach_search_bar">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>*</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -1364,7 +1380,17 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item row="2" column="6">
-            <widget class="QLineEdit" name="SearchBarPub"/>
+            <widget class="QLineEdit" name="pub_search_bar">
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>*</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -1911,7 +1937,17 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item row="2" column="6">
-            <widget class="QLineEdit" name="SearchBarPres"/>
+            <widget class="QLineEdit" name="pres_search_bar">
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>*</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -2461,7 +2497,17 @@ p, li { white-space: pre-wrap; }
             </spacer>
            </item>
            <item row="2" column="6">
-            <widget class="QLineEdit" name="SearchBarGrants"/>
+            <widget class="QLineEdit" name="fund_search_bar">
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>*</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
