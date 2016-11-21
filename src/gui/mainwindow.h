@@ -82,12 +82,16 @@ private slots:
 
     void on_teach_filter_from_textChanged();
     void on_teach_filter_to_textChanged();
+    void on_teach_search_bar_textChanged();
     void on_pub_filter_from_textChanged();
     void on_pub_filter_to_textChanged();
+    void on_pub_search_bar_textChanged();
     void on_pres_filter_from_textChanged();
     void on_pres_filter_to_textChanged();
+    void on_pres_search_bar_textChanged();
     void on_fund_filter_from_textChanged();
     void on_fund_filter_to_textChanged();
+    void on_fund_search_bar_textChanged();
 
     void on_teachPrintButton_clicked();
 
@@ -136,6 +140,7 @@ private:
     std::vector<std::string> getParentsList(QModelIndex &index);
     char getFilterStartChar(int type);
     char getFilterEndChar(int type);
+    std::string getSearchWord(int type);
 
     int yearStart, yearEnd;
 

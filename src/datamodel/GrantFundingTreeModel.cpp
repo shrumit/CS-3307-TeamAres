@@ -9,7 +9,7 @@ TreeModel(db, parent) {
 GrantFundingTreeModel::~GrantFundingTreeModel() {
 }
 
-void GrantFundingTreeModel::setupModel(int yearStart, int yearEnd, std::vector<std::string> sortFields, char filterStart, char filterEnd) {
+void GrantFundingTreeModel::setupModel(int yearStart, int yearEnd, std::vector<std::string> sortFields, char filterStart, char filterEnd, std::string searchWord) {
     rootItem = new TreeItem(dataObj->createHeadersListForGrants(sortFields[0]));
-    setupModelData(dataObj->createQStringForGrants(yearStart, yearEnd, sortFields, filterStart, filterEnd).split(QString("\n")), rootItem);
+    setupModelData(dataObj->createQStringForGrants(yearStart, yearEnd, sortFields, filterStart, filterEnd, searchWord).split(QString("\n")), rootItem);
 }

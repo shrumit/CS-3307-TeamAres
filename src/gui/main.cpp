@@ -13,7 +13,7 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    int test = 1;   /* test off when  0 */
+    int test = 0;   /* test off when  0 */
     QApplication app(argc, argv);
     MainWindow w;
 
