@@ -236,7 +236,7 @@ p, li { white-space: pre-wrap; }
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>3</number>
          </property>
          <property name="usesScrollButtons">
           <bool>false</bool>
@@ -831,7 +831,10 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
              <property name="text">
-              <string>*</string>
+              <string/>
+             </property>
+             <property name="placeholderText">
+              <string>Search</string>
              </property>
             </widget>
            </item>
@@ -1388,7 +1391,10 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
              <property name="text">
-              <string>*</string>
+              <string/>
+             </property>
+             <property name="placeholderText">
+              <string>Search</string>
              </property>
             </widget>
            </item>
@@ -1945,7 +1951,10 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
              <property name="text">
-              <string>*</string>
+              <string/>
+             </property>
+             <property name="placeholderText">
+              <string>Search</string>
              </property>
             </widget>
            </item>
@@ -2505,7 +2514,10 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
              <property name="text">
-              <string>*</string>
+              <string/>
+             </property>
+             <property name="placeholderText">
+              <string>Search</string>
              </property>
             </widget>
            </item>
@@ -2525,7 +2537,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
