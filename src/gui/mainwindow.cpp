@@ -203,6 +203,7 @@ int MainWindow::checkFile(int index, QString filePath) {
     case TEACH:
         // read if first or if a new file is loaded
         if (teachPath.isEmpty() || (!teachPath.isEmpty() && filePath.compare(teachPath))) {
+
             // create a new reader to read in the file
             reader = CSVReader(filePath.toStdString());
             header = reader.getHeaders();
@@ -959,6 +960,36 @@ void MainWindow::on_pres_pie_button_toggled() { ui->pres_graph_stackedWidget->se
 void MainWindow::on_fund_bar_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_fund_pie_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(0);}
 
+
+QString MainWindow::indexToString(int i){
+    QString check;
+    switch(i){
+        case -1:
+            check = "You loaded an incorrect file type";
+            break;
+        case 0:
+            check = "You loaded a teach file";
+            break;
+        case 1:
+            check = "You loaded a publications file";
+            break;
+        case 2:
+            check = "You loaded a presentations file";
+            break;
+        case 3:
+            check = "You loaded a grants and funding file";
+            break;
+    }
+    return check;
+}
+
+//0 - 3 is {Teaching, Publications, Presentations, Grands & Funding)
+//Given an index and a path, this functino will identfiy whether or not the headers don't match up.
+int MainWindow::checkFileString(int index, QString path){
+
+}
+
+//0 - 3 is {Teaching, Publications, Presentations, Grands & Funding)
 void MainWindow::on_teach_load_file_clicked() {
     QString path = load_file();
     if (!path.isEmpty()) {
@@ -1003,8 +1034,7 @@ bool MainWindow::load_teach(QString path, bool multi_file) {
         return true;
     } else {
         if (!multi_file) {
-            QString checkString = indexToString(checkFileString(path));
-            QMessageBox::critical(this, "Invalid File", "Not a valid teaching file." + checkString);
+            QMessageBox::critical(this, "Invalid File", "Not a valid teaching file.");
             on_teach_load_file_clicked();
         }
     }
@@ -1055,8 +1085,7 @@ bool MainWindow::load_pub(QString path, bool multi_file) {
         return true;
     } else {
         if (!multi_file) {
-            QString checkString = indexToString(checkFileString(path));
-            QMessageBox::critical(this, "Invalid File", "Not a valid publications file." + checkString);
+            QMessageBox::critical(this, "Invalid File", "Not a valid publications file.");
             on_pub_load_file_clicked();
         }
     }
@@ -1107,8 +1136,7 @@ bool MainWindow::load_pres(QString path, bool multi_file) {
         return true;
     } else {
         if (!multi_file) {
-            QString checkString = indexToString(checkFileString(path));
-            QMessageBox::critical(this, "Invalid File", "Not a valid presentations file." + checkString);
+            QMessageBox::critical(this, "Invalid File", "Not a valid presentations file.");
             on_pres_load_file_clicked();
         }
     }
@@ -1159,60 +1187,12 @@ bool MainWindow::load_fund(QString path, bool multi_file) {
         return true;
     } else {
         if (!multi_file) {
-            QString checkString = indexToString(checkFileString(path));
-            QMessageBox::critical(this, "Invalid File", "Not a valid grants and funding file." + checkString);
+            QMessageBox::critical(this, "Invalid File", "Not a valid grants and funding file.");
             on_fund_load_file_clicked();
         }
     }
     return false;
 }
-
-QString indexToString(int i){
-    QString check;
-    switch(i){
-        case -1:
-            check = "You loaded an incorrect file type";
-            break;
-        case 1:
-            check = "You loaded a teach file";
-            break;
-        case 2:
-            check = "You loaded a publications file";
-            break;
-        case 3:
-            check = "You loaded a presentations file";
-            break;
-        case 4:
-            check = "You loaded a grants and funding file";
-            break;
-    }
-    return check;
-}
-
-//0 - 4 is {Teaching, Publications, Presentations, Grands & Funding)
-int MainWindow::checkFileString(QString path){
-    int i = 0;
-    int check = 0;
-    for (i = 0; i <= 3; i++){
-        check = checkFile(i,path);
-        if (check == 0){
-            break;
-        }
-    }
-    if(check == 1 && i == 4)
-        return -1;
-    if(i == 0)
-        return i;
-    if(i == 1)
-        return i;
-    if(i == 2)
-        return i;
-    if(i == 3)
-        return i;
-    return -1;
-}
-
-
 
 
 void MainWindow::on_FromDate_dateChanged(const QDate &date) {
