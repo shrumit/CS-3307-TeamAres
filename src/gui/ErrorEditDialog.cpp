@@ -9,6 +9,9 @@
 #include <QAbstractButton>
 #include <QMessageBox>
 
+QBrush error_brush(QColor(255, 0, 0, 100));
+QBrush modif_brush(QColor(0, 255, 0, 100));
+
 /*
  * Load data contained in the errors vector into a QWidgetTable
  * Fields will be marked red and editable if they are a mandatory field
@@ -28,7 +31,7 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
     mandatoryList(mandatory),
     ui(new Ui::ErrorEditDialog)
 {
-
+    error_lock = true;
     ui->setupUi(this);
     ui->tableWidget->setRowCount((int) errors.size());
     ui->tableWidget->setColumnCount((int) headers.size());
@@ -40,7 +43,6 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
 
     ui->tableWidget->setHorizontalHeaderLabels(listHeaders);
     QTableWidgetItem* item;
-    QBrush brush(QColor(255, 0, 0, 100));
     std::vector<std::vector<std::string>*>::iterator it;
     int row = 0;
     for (it = errors.begin(); it != errors.end(); it++) {
@@ -52,9 +54,8 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
             for (int i = 0; i < (int) mandatory.size(); i++) {
                 if (mandatory[i].compare(headers.at(col)) == 0
                         && (*it)->at(col).compare("") == 0) {
-                    item->setBackground(brush);
+                    item->setBackground(error_brush);
                     item->setFlags(flag);
-                    // qDebug() << "E:" << col << "," << row;
                     error_cells.insert(std::make_tuple(row,col));
                 }
             }
@@ -62,6 +63,10 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
         }
         row++;
     }
+    qDebug() << "errors:" << errors.size() << " / error_cells:" << error_cells.size();
+    error_cells_original = error_cells; // preserve a copy of the original set
+    ui->errorLabel->setText(QString::number(error_cells.size()) + "  mandatory cells missing");
+    error_lock = false;
 }
 
 //Clean up allocated memory for the table items
@@ -122,6 +127,9 @@ void ErrorEditDialog::on_findPrev_clicked()
 // Selects next or previous cell
 void ErrorEditDialog::nextprevHandler(bool next)
 {
+    if (error_cells.size() == 0)
+        return;
+
     // get current cell
     int row = ui->tableWidget->currentRow();
     int col = ui->tableWidget->currentColumn();
@@ -130,17 +138,30 @@ void ErrorEditDialog::nextprevHandler(bool next)
     // get successsor/predecessor to current cell in error_cells
     if (row == -1) {
         it = error_cells.begin();
-    } else {
+    }
+    else {
         it = error_cells.find(std::make_tuple(row,col));
-        if (next) {
-            it++;
-            if (it == error_cells.end())
-                it = error_cells.begin(); // loop to begin
+
+        if (next) { // if "Next" button
+            if (it == error_cells.end()) { // if the current cell is no longer erroneous
+                it = error_cells.lower_bound(std::make_tuple(row,col));
+            }
+            else { // current cell still erroneous, so increment
+                it++;
+                if (it == error_cells.end())
+                    it = error_cells.begin(); // jump to begin
+            }
         }
-        else {
-            if (it == error_cells.begin())
-                it = error_cells.end(); // loop to end
-            it--;
+
+        else { // if "Previous" button
+            if (it == error_cells.end()) { // if the current cell is no longer erroneous
+                it = error_cells.upper_bound(std::make_tuple(row,col));
+            }
+            else { // current cell still erroneous, so decrement
+                if (it == error_cells.begin())
+                    it = error_cells.end(); // jump to end
+                it--;
+            }
         }
     }
 
@@ -149,7 +170,35 @@ void ErrorEditDialog::nextprevHandler(bool next)
     int ncol = std::get<1>(*it);
     QTableWidgetItem* item = ui->tableWidget->item(nrow, ncol);
     ui->tableWidget->scrollToItem(item);
+    ui->tableWidget->clearSelection();
     ui->tableWidget->setCurrentItem(item);
+    item->setSelected(true);
+    ui->tableWidget->editItem(item);
+}
+
+void ErrorEditDialog::on_tableWidget_itemChanged(QTableWidgetItem *item)
+{
+    // constructor is modfying item
+    if (error_lock)
+        return;
+
+    // check whether cell used to be an error
+    std::set<std::tuple<int,int>>::iterator it;
+    it = error_cells_original.find(std::make_tuple(item->row(),item->column()));
+    if (it == error_cells_original.end())
+        return;
+
+    if (item->text().compare("") == 0) {
+        error_cells.insert(std::make_tuple(item->row(),item->column()));
+        item->setBackground(error_brush);
+        ui->errorLabel->setText(QString::number(error_cells.size()) + " mandatory cells missing");
+    } else {
+        error_cells.erase(std::make_tuple(item->row(),item->column()));
+        item->setBackground(modif_brush);
+        ui->errorLabel->setText(QString::number(error_cells.size()) + " mandatory cells missing");
+    }
+
+    qDebug() << item->column() << "," << item->row();
 }
 
 void ErrorEditDialog::on_cancel_clicked()

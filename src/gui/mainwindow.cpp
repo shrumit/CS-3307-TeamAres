@@ -548,7 +548,7 @@ bool MainWindow::handle_field_errors(std::vector<std::vector<std::string>*>& err
     QMessageBox prompt;
     QString mainText = "File contains ";
     mainText.append(QString::number(err.size()));
-    mainText.append(" records with missing mandatory fields.");
+    mainText.append(" rows with missing mandatory fields.");
     prompt.setText(mainText);
     prompt.setInformativeText("Do you want to edit these entries or discard?");
     prompt.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
