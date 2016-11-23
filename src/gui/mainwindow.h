@@ -133,7 +133,7 @@ private:
     teachAdvSearch* puw;
 
     std::vector<std::string> teachAdvArray = {"","",""};
-    std::vector<std::string> fundAdvArray = {"","",""};
+    std::vector<std::string> fundAdvArray = {"","","","",""};
     std::vector<std::string> presAdvArray = {"","","",""};
     std::vector<std::string> pubAdvArray = {"","","",""};
 

@@ -564,6 +564,16 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
     std::string topLevelValue;
     std::string sortedValue;
     bool adv = false;
+    bool array0Active = false;
+    bool array1Active = false;
+    bool array2Active = false;
+    bool array3Active = false;
+    bool array4Active = false;
+    bool array0 = false;
+    bool array1 = false;
+    bool array2 = false;
+    bool array3 = false;
+    bool array4 = false;
     for (int y = 0;y<advArray.size();y++){
         if(advArray[y] != ""){
             y=99999;
@@ -571,7 +581,31 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
         }
     }
     if(adv){
+            if(advArray[0] != ""){
+                array0Active = true;
+            }
+            if(advArray[1] != ""){
+                array1Active = true;
+            }
+            if(advArray[2] != ""){
+                array2Active = true;
+            }
+            if(advArray.size() > 3){
+            if(advArray[3] != ""){
+                array3Active = true;
+            }
+            }
+            if(advArray.size() > 4){
+            if(advArray[4] != ""){
+                array4Active = true;
+            }
+            }
         for (size_t x = 0; x < records.size(); x++) {
+            array0 = false;
+            array1 = false;
+            array2 = false;
+            array3 = false;
+            array4 = false;
             sortedValue = records[x]->at(sortFieldIndices[0]);
             for (m = 0; m < (int) sortFields.size(); m++) {
                 valueType = sortFields[m];
@@ -582,27 +616,6 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
             if (topLevelValue[0] == '*' && filterStart == '*') {
                 if (searchWord == "" || searchWord.at(0) == '*'){
                     if(advArray.size() == 3){
-                    if(valueType == "Member Name" && advArray[0] == ""){
-                    sortedTree.emplace(sortedValue, records[x]);
-                    m=99999;
-                    }
-                    if(valueType == "Division" && advArray[1] == ""){
-                    sortedTree.emplace(sortedValue, records[x]);
-                    m=99999;
-                    }
-                    if(valueType == "Program" && advArray[2] == ""){
-                    sortedTree.emplace(sortedValue, records[x]);
-                    m=99999;
-                    }
-                    }
-
-
-                }
-                }
-
-             else if (filterStart <= (topLevelValue[0] & ~0x20) && (topLevelValue[0] & ~0x20) <= filterEnd) {
-                if (searchWord == "" || searchWord.at(0) == '*'){
-                    if(advArray.size() == 3){
                     if(valueType == "Member Name" && advArray[0] != ""){
                         for(int i = 0; i < topLevelValue.size(); i++){
                             int c = i;
@@ -611,10 +624,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                         if (toupper(topLevelValue[i]) == toupper(advArray[0].at(z))){
                             if (z == (advArray[0].length() - 1)){
-                                sortedTree.emplace(sortedValue, records[x]);
+                                array0 = true;
                                 z=99999;
                                 c=99999;
-                                m=99999;
+
                             }
                             i++;
                             z++;
@@ -634,10 +647,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                         if (toupper(topLevelValue[i]) == toupper(advArray[1].at(z))){
                             if (z == (advArray[1].length() - 1)){
-                                sortedTree.emplace(sortedValue, records[x]);
+                                array1 = true;
                                 z=99999;
                                 c=99999;
-                                m=99999;
+
                             }
                             i++;
                             z++;
@@ -657,10 +670,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                         if (toupper(topLevelValue[i]) == toupper(advArray[2].at(z))){
                             if (z == (advArray[2].length() - 1)){
-                                sortedTree.emplace(sortedValue, records[x]);
+                                array2 = true;
                                 z=99999;
                                 c=99999;
-                                m=99999;
+
                             }
                             i++;
                             z++;
@@ -682,10 +695,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                         if (toupper(topLevelValue[i]) == toupper(advArray[0].at(z))){
                             if (z == (advArray[0].length() - 1)){
-                                sortedTree.emplace(sortedValue, records[x]);
+                                array0 = true;
                                 z=99999;
                                 c=99999;
-                                m=99999;
+
                             }
                             i++;
                             z++;
@@ -705,10 +718,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                         if (toupper(topLevelValue[i]) == toupper(advArray[1].at(z))){
                             if (z == (advArray[1].length() - 1)){
-                                sortedTree.emplace(sortedValue, records[x]);
+                                array1 = true;
                                 z=99999;
                                 c=99999;
-                                m=99999;
+
                             }
                             i++;
                             z++;
@@ -728,10 +741,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                         if (toupper(topLevelValue[i]) == toupper(advArray[2].at(z))){
                             if (z == (advArray[2].length() - 1)){
-                                sortedTree.emplace(sortedValue, records[x]);
+                                array2 = true;
                                 z=99999;
                                 c=99999;
-                                m=99999;
+
                             }
                             i++;
                             z++;
@@ -751,10 +764,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                         if (toupper(topLevelValue[i]) == toupper(advArray[3].at(z))){
                             if (z == (advArray[3].length() - 1)){
-                                sortedTree.emplace(sortedValue, records[x]);
+                                array3 = true;
                                 z=99999;
                                 c=99999;
-                                m=99999;
+
                             }
                             i++;
                             z++;
@@ -776,10 +789,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                         if (toupper(topLevelValue[i]) == toupper(advArray[0].at(z))){
                             if (z == (advArray[0].length() - 1)){
-                                sortedTree.emplace(sortedValue, records[x]);
+                                array0 = true;
                                 z=99999;
                                 c=99999;
-                                m=99999;
+
                             }
                             i++;
                             z++;
@@ -799,10 +812,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                         if (toupper(topLevelValue[i]) == toupper(advArray[1].at(z))){
                             if (z == (advArray[1].length() - 1)){
-                                sortedTree.emplace(sortedValue, records[x]);
+                                array1 = true;
                                 z=99999;
                                 c=99999;
-                                m=99999;
+
                             }
                             i++;
                             z++;
@@ -822,10 +835,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                         if (toupper(topLevelValue[i]) == toupper(advArray[2].at(z))){
                             if (z == (advArray[2].length() - 1)){
-                                sortedTree.emplace(sortedValue, records[x]);
+                                array2 = true;
                                 z=99999;
                                 c=99999;
-                                m=99999;
+
                             }
                             i++;
                             z++;
@@ -845,10 +858,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                         if (toupper(topLevelValue[i]) == toupper(advArray[3].at(z))){
                             if (z == (advArray[3].length() - 1)){
-                                sortedTree.emplace(sortedValue, records[x]);
+                                array3 = true;
                                 z=99999;
                                 c=99999;
-                                m=99999;
+
                             }
                             i++;
                             z++;
@@ -868,10 +881,299 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                         if (toupper(topLevelValue[i]) == toupper(advArray[4].at(z))){
                             if (z == (advArray[4].length() - 1)){
-                                sortedTree.emplace(sortedValue, records[x]);
+                                array4 = true;
                                 z=99999;
                                 c=99999;
-                                m=99999;
+
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                }
+
+
+                }
+                }
+
+             else if (filterStart <= (topLevelValue[0] & ~0x20) && (topLevelValue[0] & ~0x20) <= filterEnd) {
+                if (searchWord == "" || searchWord.at(0) == '*'){
+                    if(advArray.size() == 3){
+                    if(valueType == "Member Name" && advArray[0] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[0].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[0].at(z))){
+                            if (z == (advArray[0].length() - 1)){
+                                array0 = true;
+                                z=99999;
+                                c=99999;
+
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Division" && advArray[1] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[1].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[1].at(z))){
+                            if (z == (advArray[1].length() - 1)){
+                                array1 = true;
+                                z=99999;
+                                c=99999;
+
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Program" && advArray[2] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[2].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[2].at(z))){
+                            if (z == (advArray[2].length() - 1)){
+                                array2 = true;
+                                z=99999;
+                                c=99999;
+
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    }
+                    if(advArray.size() == 4){
+                    if(valueType == "Member Name" && advArray[0] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[0].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[0].at(z))){
+                            if (z == (advArray[0].length() - 1)){
+                                array0 = true;
+                                z=99999;
+                                c=99999;
+
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Type" && advArray[1] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[1].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[1].at(z))){
+                            if (z == (advArray[1].length() - 1)){
+                                array1 = true;
+                                z=99999;
+                                c=99999;
+
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Role" && advArray[2] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[2].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[2].at(z))){
+                            if (z == (advArray[2].length() - 1)){
+                                array2 = true;
+                                z=99999;
+                                c=99999;
+
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Title" && advArray[3] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[3].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[3].at(z))){
+                            if (z == (advArray[3].length() - 1)){
+                                array3 = true;
+                                z=99999;
+                                c=99999;
+
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    }
+                    if(advArray.size() == 5){
+                    if(valueType == "Member Name" && advArray[0] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[0].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[0].at(z))){
+                            if (z == (advArray[0].length() - 1)){
+                                array0 = true;
+                                z=99999;
+                                c=99999;
+
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "FundingType" && advArray[1] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[1].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[1].at(z))){
+                            if (z == (advArray[1].length() - 1)){
+                                array1 = true;
+                                z=99999;
+                                c=99999;
+
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Status" && advArray[2] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[2].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[2].at(z))){
+                            if (z == (advArray[2].length() - 1)){
+                                array2 = true;
+                                z=99999;
+                                c=99999;
+
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Role" && advArray[3] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[3].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[3].at(z))){
+                            if (z == (advArray[3].length() - 1)){
+                                array3 = true;
+                                z=99999;
+                                c=99999;
+
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Title" && advArray[4] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[4].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[4].at(z))){
+                            if (z == (advArray[4].length() - 1)){
+                                array4 = true;
+                                z=99999;
+                                c=99999;
+
                             }
                             i++;
                             z++;
@@ -902,10 +1204,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                             if (toupper(topLevelValue[i]) == toupper(advArray[0].at(z))){
                                 if (z == (advArray[0].length() - 1)){
-                                    sortedTree.emplace(sortedValue, records[x]);
+                                    array0 = true;
                                     z=99999;
                                     c=99999;
-                                    m=99999;
+
                                 }
                                 i++;
                                 z++;
@@ -925,10 +1227,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                             if (toupper(topLevelValue[i]) == toupper(advArray[1].at(z))){
                                 if (z == (advArray[1].length() - 1)){
-                                    sortedTree.emplace(sortedValue, records[x]);
+                                    array1 = true;
                                     z=99999;
                                     c=99999;
-                                    m=99999;
+
                                 }
                                 i++;
                                 z++;
@@ -948,10 +1250,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                             if (toupper(topLevelValue[i]) == toupper(advArray[2].at(z))){
                                 if (z == (advArray[2].length() - 1)){
-                                    sortedTree.emplace(sortedValue, records[x]);
+                                    array2 = true;
                                     z=99999;
                                     c=99999;
-                                    m=99999;
+
                                 }
                                 i++;
                                 z++;
@@ -973,10 +1275,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                             if (toupper(topLevelValue[i]) == toupper(advArray[0].at(z))){
                                 if (z == (advArray[0].length() - 1)){
-                                    sortedTree.emplace(sortedValue, records[x]);
+                                    array0 = true;
                                     z=99999;
                                     c=99999;
-                                    m=99999;
+
                                 }
                                 i++;
                                 z++;
@@ -996,10 +1298,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                             if (toupper(topLevelValue[i]) == toupper(advArray[1].at(z))){
                                 if (z == (advArray[1].length() - 1)){
-                                    sortedTree.emplace(sortedValue, records[x]);
+                                    array1 = true;
                                     z=99999;
                                     c=99999;
-                                    m=99999;
+
                                 }
                                 i++;
                                 z++;
@@ -1019,10 +1321,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                             if (toupper(topLevelValue[i]) == toupper(advArray[2].at(z))){
                                 if (z == (advArray[2].length() - 1)){
-                                    sortedTree.emplace(sortedValue, records[x]);
+                                    array2 = true;
                                     z=99999;
                                     c=99999;
-                                    m=99999;
+
                                 }
                                 i++;
                                 z++;
@@ -1042,10 +1344,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                             if (toupper(topLevelValue[i]) == toupper(advArray[3].at(z))){
                                 if (z == (advArray[3].length() - 1)){
-                                    sortedTree.emplace(sortedValue, records[x]);
+                                    array3 = true;
                                     z=99999;
                                     c=99999;
-                                    m=99999;
+
                                 }
                                 i++;
                                 z++;
@@ -1067,10 +1369,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                             if (toupper(topLevelValue[i]) == toupper(advArray[0].at(z))){
                                 if (z == (advArray[0].length() - 1)){
-                                    sortedTree.emplace(sortedValue, records[x]);
+                                    array0 = true;
                                     z=99999;
                                     c=99999;
-                                    m=99999;
+
                                 }
                                 i++;
                                 z++;
@@ -1090,10 +1392,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                             if (toupper(topLevelValue[i]) == toupper(advArray[1].at(z))){
                                 if (z == (advArray[1].length() - 1)){
-                                    sortedTree.emplace(sortedValue, records[x]);
+                                    array1 = true;
                                     z=99999;
                                     c=99999;
-                                    m=99999;
+
                                 }
                                 i++;
                                 z++;
@@ -1113,10 +1415,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                             if (toupper(topLevelValue[i]) == toupper(advArray[2].at(z))){
                                 if (z == (advArray[2].length() - 1)){
-                                    sortedTree.emplace(sortedValue, records[x]);
+                                    array2 = true;
                                     z=99999;
                                     c=99999;
-                                    m=99999;
+
                                 }
                                 i++;
                                 z++;
@@ -1136,10 +1438,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                             if (toupper(topLevelValue[i]) == toupper(advArray[3].at(z))){
                                 if (z == (advArray[3].length() - 1)){
-                                    sortedTree.emplace(sortedValue, records[x]);
+                                    array3 = true;
                                     z=99999;
                                     c=99999;
-                                    m=99999;
+
                                 }
                                 i++;
                                 z++;
@@ -1159,10 +1461,10 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
                             if (toupper(topLevelValue[i]) == toupper(advArray[4].at(z))){
                                 if (z == (advArray[4].length() - 1)){
-                                    sortedTree.emplace(sortedValue, records[x]);
+                                    array4 = true;
                                     z=99999;
                                     c=99999;
-                                    m=99999;
+
                                 }
                                 i++;
                                 z++;
@@ -1191,6 +1493,9 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
             }
 
 }
+            if(array0Active == array0 && array1Active == array1 && array2Active == array2 && array3Active == array3 && array4Active == array4 ){
+                sortedTree.emplace(sortedValue, records[x]);
+            }
         }
     }
 
