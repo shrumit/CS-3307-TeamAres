@@ -573,10 +573,12 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
             for(int i = 0; i < topLevelValue.size(); i++){
                 int c = i;
                 int z = 0;
-                 while(z < searchWord.length()){
+                while(z < searchWord.length()){
                 if (toupper(topLevelValue[i]) == toupper(searchWord.at(z))){
                     if (z == (searchWord.length() - 1)){
                         sortedTree.emplace(topLevelValue, records[x]);
+                        z=99999;
+                        c=99999;
                     }
                     z++;
                     i++;
@@ -602,12 +604,14 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
             if (toupper(topLevelValue[i]) == toupper(searchWord.at(z))){
                 if (z == (searchWord.length() - 1)){
                     sortedTree.emplace(topLevelValue, records[x]);
+                    z=99999;
+                    c=99999;
                 }
                 i++;
                 z++;
             }
             else{
-                z = 999999;
+                z = 99999;
             }
             }
                 i = c;
