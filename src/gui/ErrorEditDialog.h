@@ -37,6 +37,7 @@ private:
     std::vector<std::string> headerList;
     std::vector<std::string> mandatoryList;
     std::set<std::tuple<int,int>> error_cells;
+    std::set<std::tuple<int,int>> error_cells_original;
     Ui::ErrorEditDialog *ui;
     bool error_lock = false;
 

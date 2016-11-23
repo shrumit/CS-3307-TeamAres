@@ -10,7 +10,7 @@
 #include <QMessageBox>
 
 QBrush error_brush(QColor(255, 0, 0, 100));
-QBrush modif_brush(QColor(255, 255, 0, 100));
+QBrush modif_brush(QColor(0, 255, 0, 100));
 
 /*
  * Load data contained in the errors vector into a QWidgetTable
@@ -64,7 +64,7 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
         row++;
     }
     qDebug() << "errors:" << errors.size() << " / error_cells:" << error_cells.size();
-
+    error_cells_original = error_cells; // preserve a copy of the original set
     ui->errorLabel->setText(QString::number(error_cells.size()) + "  mandatory cells missing");
     error_lock = false;
 }
@@ -178,7 +178,14 @@ void ErrorEditDialog::nextprevHandler(bool next)
 
 void ErrorEditDialog::on_tableWidget_itemChanged(QTableWidgetItem *item)
 {
+    // constructor is modfying item
     if (error_lock)
+        return;
+
+    // check whether cell used to be an error
+    std::set<std::tuple<int,int>>::iterator it;
+    it = error_cells_original.find(std::make_tuple(item->row(),item->column()));
+    if (it == error_cells_original.end())
         return;
 
     if (item->text().compare("") == 0) {
