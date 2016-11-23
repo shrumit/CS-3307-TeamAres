@@ -143,7 +143,7 @@ private:
     std::string getSearchWord(int type);
 
     int yearStart, yearEnd;
-    int checkFileString(int index, QString path);
+    int checkFileString(QString path);
     QString indexToString(int i);
     int checkFile(int index, QString filePath);
     //std::vector<std::string> getSelectedSortOrder(int tabIndex);
