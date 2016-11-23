@@ -589,7 +589,7 @@ void MainWindow::makeTree(int tabIndex) {
         currentView = ui->teachTreeView;
 
         // analyze the data into a tree
-        currentTree->setupModel(yearStart, yearEnd, teachSortOrder, getFilterStartChar(TEACH), getFilterEndChar(TEACH), getSearchWord(TEACH));
+        currentTree->setupModel(yearStart, yearEnd, teachSortOrder, getFilterStartChar(TEACH), getFilterEndChar(TEACH), getSearchWord(TEACH), teachAdvArray);
 
         ui->teach_pie_button->toggle();
 
@@ -606,7 +606,7 @@ void MainWindow::makeTree(int tabIndex) {
         currentView = ui->pubTreeView;
 
         // analyze the data into a tree
-        currentTree->setupModel(yearStart, yearEnd, pubSortOrder, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS), getSearchWord(PUBLICATIONS));
+        currentTree->setupModel(yearStart, yearEnd, pubSortOrder, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS), getSearchWord(PUBLICATIONS), pubAdvArray);
 
         ui->pub_pie_button->toggle();
 
@@ -623,7 +623,7 @@ void MainWindow::makeTree(int tabIndex) {
         currentView = ui->presTreeView;
 
         // analyze the data into a tree
-        currentTree->setupModel(yearStart, yearEnd, presSortOrder, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS), getSearchWord(PRESENTATIONS));
+        currentTree->setupModel(yearStart, yearEnd, presSortOrder, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS), getSearchWord(PRESENTATIONS), presAdvArray);
 
         ui->pres_pie_button->toggle();
 
@@ -640,7 +640,7 @@ void MainWindow::makeTree(int tabIndex) {
         currentView = ui->fundTreeView;
 
         // analyze the data into a tree
-        currentTree->setupModel(yearStart, yearEnd, fundSortOrder, getFilterStartChar(FUNDING), getFilterEndChar(FUNDING), getSearchWord(FUNDING));
+        currentTree->setupModel(yearStart, yearEnd, fundSortOrder, getFilterStartChar(FUNDING), getFilterEndChar(FUNDING), getSearchWord(FUNDING), fundAdvArray);
 
         ui->fund_pie_button->toggle();
 
@@ -980,6 +980,7 @@ bool MainWindow::load_teach(QString path, bool multi_file) {
         ui->teach_sort_label->setEnabled(true);
         ui->teach_filter->setEnabled(true);
         ui->teach_filter_label->setEnabled(true);
+        ui->teach_adv_search_button->setEnabled(true);
 
         // load save order
         QSortListIO teachSaveOrder(TEACHORDER_SAVE);
@@ -1253,7 +1254,7 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
         teachClickedName = clickedName;
         std::vector<std::string> sortOrder(teachSortOrder.begin(), teachSortOrder.begin()+parentsList.size()+1);
         std::vector<std::pair <std::string, int>> list =
-                teachdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH), getSearchWord(TEACH));
+                teachdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH), getSearchWord(TEACH), teachAdvArray);
         std::vector<std::pair <std::string, double>> chartList;
         for (int i = 0; i < (int) list.size(); i++) {
             chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
@@ -1303,7 +1304,7 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
         pubClickedName = clickedName;
         std::vector<std::string> sortOrder(pubSortOrder.begin(), pubSortOrder.begin()+parentsList.size()+1);
         std::vector<std::pair <std::string, int>> list =
-                pubdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS), getSearchWord(PUBLICATIONS));
+                pubdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS), getSearchWord(PUBLICATIONS), pubAdvArray);
         std::vector<std::pair <std::string, double>> chartList;
         for (int i = 0; i < (int) list.size(); i++) {
             chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
@@ -1353,7 +1354,7 @@ void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
         presClickedName = clickedName;
         std::vector<std::string> sortOrder(presSortOrder.begin(), presSortOrder.begin()+parentsList.size()+1);
         std::vector<std::pair <std::string, int>> list =
-                presdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS), getSearchWord(PRESENTATIONS));
+                presdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS), getSearchWord(PRESENTATIONS), presAdvArray);
         std::vector<std::pair <std::string, double>> chartList;
         for (int i = 0; i < (int) list.size(); i++) {
             chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
@@ -1404,7 +1405,7 @@ void MainWindow::on_fundTreeView_clicked(const QModelIndex &index) {
             fundClickedName = clickedName;
             std::vector<std::string> sortOrder(fundSortOrder.begin(), fundSortOrder.begin()+parentsList.size()+1);
             std::vector<std::pair <std::string, double>> chartList =
-                    funddb->getTotalsTuple(yearStart, yearEnd, sortOrder, parentsList, "Total Amount", getFilterStartChar(FUNDING), getFilterEndChar(FUNDING), getSearchWord(FUNDING));
+                    funddb->getTotalsTuple(yearStart, yearEnd, sortOrder, parentsList, "Total Amount", getFilterStartChar(FUNDING), getFilterEndChar(FUNDING), getSearchWord(FUNDING), fundAdvArray);
 
             if (!chartList.empty()) {
                 ui->fundBarChart->clearPlottables();
@@ -1617,6 +1618,98 @@ std::string MainWindow::getSearchWord(int type){
     }
 
     return strInField;
+}
+
+void MainWindow::on_fund_adv_search_button_clicked(){
+    if (funddb != NULL) {
+        fundAdvSearch* puw = new fundAdvSearch();
+        int ret = puw->exec();
+        if (ret) {
+            fundAdvArray[0] = puw->getMemberName();
+            fundAdvArray[1] = puw->getFundingType();
+            fundAdvArray[2] = puw->getStatus();
+            fundAdvArray[3] = puw->getRole();
+            fundAdvArray[4] = puw->getTitle();
+        }
+        else{
+            fundAdvArray[0] = "";
+            fundAdvArray[1] = "";
+            fundAdvArray[2] = "";
+            fundAdvArray[3] = "";
+            fundAdvArray[4] = "";
+        }
+        delete puw;
+    } else {
+        QMessageBox::critical(this, "Missing File", "Please load a file first.");
+    }
+    refresh(FUNDING);
+}
+
+void MainWindow::on_pres_adv_search_button_clicked(){
+    if (presdb != NULL) {
+        presAdvSearch* puw = new presAdvSearch();
+        int ret = puw->exec();
+        if (ret) {
+            presAdvArray[0] = puw->getMemberName();
+            presAdvArray[1] = puw->getType();
+            presAdvArray[2] = puw->getRole();
+            presAdvArray[3] = puw->getTitle();
+        }
+        else{
+            presAdvArray[0] = "";
+            presAdvArray[1] = "";
+            presAdvArray[2] = "";
+            presAdvArray[3] = "";
+        }
+        delete puw;
+    } else {
+        QMessageBox::critical(this, "Missing File", "Please load a file first.");
+    }
+    refresh(PRESENTATIONS);
+}
+
+void MainWindow::on_pub_adv_search_button_clicked(){
+    if (pubdb != NULL) {
+        pubAdvSearch* puw = new pubAdvSearch();
+        int ret = puw->exec();
+        if (ret) {
+            pubAdvArray[0] = puw->getMemberName();
+            pubAdvArray[1] = puw->getType();
+            pubAdvArray[2] = puw->getRole();
+            pubAdvArray[3] = puw->getTitle();
+        }
+        else{
+            pubAdvArray[0] = "";
+            pubAdvArray[1] = "";
+            pubAdvArray[2] = "";
+            pubAdvArray[3] = "";
+        }
+        delete puw;
+    } else {
+        QMessageBox::critical(this, "Missing File", "Please load a file first.");
+    }
+    refresh(PUBLICATIONS);
+}
+
+void MainWindow::on_teach_adv_search_button_clicked(){
+    if (teachdb != NULL) {
+        teachAdvSearch* puw = new teachAdvSearch();
+        int ret = puw->exec();
+        if (ret) {
+            teachAdvArray[0] = puw->getMemberName();
+            teachAdvArray[1] = puw->getDivision();
+            teachAdvArray[2] = puw->getProgram();
+        }
+        else{
+            teachAdvArray[0] = "";
+            teachAdvArray[1] = "";
+            teachAdvArray[2] = "";
+        }
+        delete puw;
+    } else {
+        QMessageBox::critical(this, "Missing File", "Please load a file first.");
+    }
+    refresh(TEACH);
 }
 
 void MainWindow::on_teach_filter_from_textChanged() { refresh(TEACH);}

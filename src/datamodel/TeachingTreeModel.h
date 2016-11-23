@@ -8,7 +8,7 @@ class TeachingTreeModel : public TreeModel
 public:
     TeachingTreeModel(RecordsManager*, QObject *parent=0);
     ~TeachingTreeModel();
-    void setupModel(int start, int end, std::vector<std::string> sortFields, char filterStart, char filterEnd, std::string searchWord);
+    void setupModel(int start, int end, std::vector<std::string> sortFields, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray);
 };
 
 #endif // TEACHINGTREEMODEL_H

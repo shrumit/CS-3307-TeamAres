@@ -136,8 +136,8 @@ std::vector<std::string> RecordsManager::list(int n, ...) {
  * @return              a formatted QString to be used directly in the creation
  *                      of a TreeModel
  */
-QString RecordsManager::createQStringForGrants(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord) {
-    QString s = QString(analyze(startYear, endYear, sortFields, list(1, "Total Amount"), 0x1, sortFields.back(), filterStart, filterEnd, searchWord).c_str());
+QString RecordsManager::createQStringForGrants(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray) {
+    QString s = QString(analyze(startYear, endYear, sortFields, list(1, "Total Amount"), 0x1, sortFields.back(), filterStart, filterEnd, searchWord, advArray).c_str());
     return s;
 }
 
@@ -162,8 +162,8 @@ QList<QVariant> RecordsManager::createHeadersListForGrants(std::string topLevel)
  * @return              a formatted QString to be used directly in the creation
  *                      of a TreeModel
  */
-QString RecordsManager::createQStringForPres(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord) {
-    return QString(analyze(startYear, endYear, sortFields, sortFields.back(), filterStart, filterEnd, searchWord).c_str());
+QString RecordsManager::createQStringForPres(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray) {
+    return QString(analyze(startYear, endYear, sortFields, sortFields.back(), filterStart, filterEnd, searchWord, advArray).c_str());
 }
 
 /**
@@ -187,8 +187,8 @@ QList<QVariant> RecordsManager::createHeadersListForPres(std::string topLevel) {
  * @return              a formatted QString to be used directly in the creation
  *                      of a TreeModel
  */
-QString RecordsManager::createQStringForPubs(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord) {
-    return QString(analyze(startYear, endYear, sortFields, sortFields.back(), filterStart, filterEnd, searchWord).c_str());
+QString RecordsManager::createQStringForPubs(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray) {
+    return QString(analyze(startYear, endYear, sortFields, sortFields.back(), filterStart, filterEnd, searchWord, advArray).c_str());
 }
 
 /**
@@ -212,8 +212,8 @@ QList<QVariant> RecordsManager::createHeadersListForPubs(std::string topLevel) {
  * @return              a formatted QString to be used directly in the creation
  *                      of a TreeModel
  */
-QString RecordsManager::createQStringForTeaching(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord) {
-    return QString(analyze(startYear, endYear, sortFields, list(2, "Total Hours", "Number Of Trainees"), 0x0, sortFields.back(), filterStart, filterEnd, searchWord).c_str());
+QString RecordsManager::createQStringForTeaching(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray) {
+    return QString(analyze(startYear, endYear, sortFields, list(2, "Total Hours", "Number Of Trainees"), 0x0, sortFields.back(), filterStart, filterEnd, searchWord, advArray).c_str());
 }
 
 /**
@@ -237,11 +237,11 @@ QList<QVariant> RecordsManager::createHeadersListForTeaching(std::string topLeve
  * @param filterEnd     the end of a character range with which to filter the top-level by
  * @return              a vector of tuples containing the member name and its count
  */
-std::vector<std::pair<std::string, int>> RecordsManager::getCountByName(int startYear, int endYear, char filterStart, char filterEnd, std::string searchWord) {
+std::vector<std::pair<std::string, int>> RecordsManager::getCountByName(int startYear, int endYear, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray) {
     std::vector<std::pair < std::string, int>> ret;
 
     // query the database
-    std::string query = analyze(startYear, endYear, list(1, "Member Name"), list(0), 0, "Member Name", filterStart, filterEnd, searchWord);
+    std::string query = analyze(startYear, endYear, list(1, "Member Name"), list(0), 0, "Member Name", filterStart, filterEnd, searchWord, advArray);
 
     // interpret the result string
     size_t pos = 0, index;
@@ -283,11 +283,11 @@ std::vector<std::pair<std::string, int>> RecordsManager::getCountByName(int star
  * @param filterEnd     the end of a character range with which to filter the top-level by
  * @return              a vector of tuples containing a member's count types and their counts
  */
-std::vector<std::pair<std::string, int>> RecordsManager::getCountTuple(int startYear, int endYear, const std::vector<std::string> &headers, const std::vector<std::string> &matchStrings, char filterStart, char filterEnd, std::string searchWord) {
+std::vector<std::pair<std::string, int>> RecordsManager::getCountTuple(int startYear, int endYear, const std::vector<std::string> &headers, const std::vector<std::string> &matchStrings, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray) {
     std::vector<std::pair < std::string, int>> ret;
 
     // query the database
-    std::string query = analyze(startYear, endYear, headers, headers.back(), filterStart, filterEnd, searchWord);
+    std::string query = analyze(startYear, endYear, headers, headers.back(), filterStart, filterEnd, searchWord, advArray);
 
     size_t pos = 0, depth = 0, index;
     int totalCount;
@@ -371,11 +371,11 @@ std::vector<std::pair<std::string, int>> RecordsManager::getCountTuple(int start
  * @param filterEnd     the end of a character range with which to filter the top-level by
  * @return              a vector of tuples containing a member's accumulator types and their totals
  */
-std::vector<std::pair<std::string, double>> RecordsManager::getTotalsTuple(int startYear, int endYear, const std::vector<std::string> &headers, const std::vector<std::string> &matchStrings, std::string accCol, char filterStart, char filterEnd, std::string searchWord) {
+std::vector<std::pair<std::string, double>> RecordsManager::getTotalsTuple(int startYear, int endYear, const std::vector<std::string> &headers, const std::vector<std::string> &matchStrings, std::string accCol, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray) {
     std::vector<std::pair < std::string, double>> ret;
 
     // query the database
-    std::string query = analyze(startYear, endYear, headers, list(1, accCol.c_str()), 0x0, headers.back(), filterStart, filterEnd, searchWord);
+    std::string query = analyze(startYear, endYear, headers, list(1, accCol.c_str()), 0x0, headers.back(), filterStart, filterEnd, searchWord, advArray );
 
     // interpret the result string
     size_t pos = 0, depth = 0, index;
@@ -512,8 +512,8 @@ std::string RecordsManager::removeTrailingZeros(double d) {
  * @param filterEnd     the end of a character range with which to filter the top-level by
  * @return              a formatted string with the analysis, can be used for TreeModel
  */
-std::string RecordsManager::analyze(int startYear, int endYear, const std::vector<std::string> &sortFields, std::string countCol, char filterStart, char filterEnd, std::string searchWord) {
-    return analyze(startYear, endYear, sortFields, list(0), 0, countCol, filterStart, filterEnd, searchWord);
+std::string RecordsManager::analyze(int startYear, int endYear, const std::vector<std::string> &sortFields, std::string countCol, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray) {
+    return analyze(startYear, endYear, sortFields, list(0), 0, countCol, filterStart, filterEnd, searchWord, advArray);
 }
 
 /**
@@ -534,7 +534,7 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
  * @return              a formatted string with the analysis, can be used for TreeModel
  */
 std::string RecordsManager::analyze(int startYear, int endYear, const std::vector<std::string> &sortFields, const std::vector<std::string> &accs,
-        int currencyMask, std::string countCol, char filterStart, char filterEnd, std::string searchWord) {
+        int currencyMask, std::string countCol, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray) {
     std::string ret;
     int sum = 0;
     std::vector<BasicRecord*> records = findRecordsInRange(startYear, endYear);
@@ -560,7 +560,641 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
     // create a tree sorted by the first sort field
     StringTree sortedTree;
+    std::string valueType;
     std::string topLevelValue;
+    std::string sortedValue;
+    bool adv = false;
+    for (int y = 0;y<advArray.size();y++){
+        if(advArray[y] != ""){
+            y=99999;
+            adv = true;
+        }
+    }
+    if(adv){
+        for (size_t x = 0; x < records.size(); x++) {
+            sortedValue = records[x]->at(sortFieldIndices[0]);
+            for (m = 0; m < (int) sortFields.size(); m++) {
+                valueType = sortFields[m];
+
+            topLevelValue = records[x]->at(sortFieldIndices[m]);
+
+            // check that the top-level value passes our filter before adding it
+            if (topLevelValue[0] == '*' && filterStart == '*') {
+                if (searchWord == "" || searchWord.at(0) == '*'){
+                    if(advArray.size() == 3){
+                    if(valueType == "Member Name" && advArray[0] == ""){
+                    sortedTree.emplace(sortedValue, records[x]);
+                    m=99999;
+                    }
+                    if(valueType == "Division" && advArray[1] == ""){
+                    sortedTree.emplace(sortedValue, records[x]);
+                    m=99999;
+                    }
+                    if(valueType == "Program" && advArray[2] == ""){
+                    sortedTree.emplace(sortedValue, records[x]);
+                    m=99999;
+                    }
+                    }
+
+
+                }
+                }
+
+             else if (filterStart <= (topLevelValue[0] & ~0x20) && (topLevelValue[0] & ~0x20) <= filterEnd) {
+                if (searchWord == "" || searchWord.at(0) == '*'){
+                    if(advArray.size() == 3){
+                    if(valueType == "Member Name" && advArray[0] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[0].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[0].at(z))){
+                            if (z == (advArray[0].length() - 1)){
+                                sortedTree.emplace(sortedValue, records[x]);
+                                z=99999;
+                                c=99999;
+                                m=99999;
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Division" && advArray[1] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[1].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[1].at(z))){
+                            if (z == (advArray[1].length() - 1)){
+                                sortedTree.emplace(sortedValue, records[x]);
+                                z=99999;
+                                c=99999;
+                                m=99999;
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Program" && advArray[2] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[2].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[2].at(z))){
+                            if (z == (advArray[2].length() - 1)){
+                                sortedTree.emplace(sortedValue, records[x]);
+                                z=99999;
+                                c=99999;
+                                m=99999;
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    }
+                    if(advArray.size() == 4){
+                    if(valueType == "Member Name" && advArray[0] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[0].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[0].at(z))){
+                            if (z == (advArray[0].length() - 1)){
+                                sortedTree.emplace(sortedValue, records[x]);
+                                z=99999;
+                                c=99999;
+                                m=99999;
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Type" && advArray[1] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[1].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[1].at(z))){
+                            if (z == (advArray[1].length() - 1)){
+                                sortedTree.emplace(sortedValue, records[x]);
+                                z=99999;
+                                c=99999;
+                                m=99999;
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Role" && advArray[2] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[2].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[2].at(z))){
+                            if (z == (advArray[2].length() - 1)){
+                                sortedTree.emplace(sortedValue, records[x]);
+                                z=99999;
+                                c=99999;
+                                m=99999;
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Title" && advArray[3] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[3].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[3].at(z))){
+                            if (z == (advArray[3].length() - 1)){
+                                sortedTree.emplace(sortedValue, records[x]);
+                                z=99999;
+                                c=99999;
+                                m=99999;
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    }
+                    if(advArray.size() == 5){
+                    if(valueType == "Member Name" && advArray[0] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[0].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[0].at(z))){
+                            if (z == (advArray[0].length() - 1)){
+                                sortedTree.emplace(sortedValue, records[x]);
+                                z=99999;
+                                c=99999;
+                                m=99999;
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "FundingType" && advArray[1] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[1].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[1].at(z))){
+                            if (z == (advArray[1].length() - 1)){
+                                sortedTree.emplace(sortedValue, records[x]);
+                                z=99999;
+                                c=99999;
+                                m=99999;
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Status" && advArray[2] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[2].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[2].at(z))){
+                            if (z == (advArray[2].length() - 1)){
+                                sortedTree.emplace(sortedValue, records[x]);
+                                z=99999;
+                                c=99999;
+                                m=99999;
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Role" && advArray[3] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[3].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[3].at(z))){
+                            if (z == (advArray[3].length() - 1)){
+                                sortedTree.emplace(sortedValue, records[x]);
+                                z=99999;
+                                c=99999;
+                                m=99999;
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                    if(valueType == "Title" && advArray[4] != ""){
+                        for(int i = 0; i < topLevelValue.size(); i++){
+                            int c = i;
+                            int z = 0;
+                            while(z < advArray[4].length()){
+
+                        if (toupper(topLevelValue[i]) == toupper(advArray[4].at(z))){
+                            if (z == (advArray[4].length() - 1)){
+                                sortedTree.emplace(sortedValue, records[x]);
+                                z=99999;
+                                c=99999;
+                                m=99999;
+                            }
+                            i++;
+                            z++;
+                        }
+                        else{
+                            z = 99999;
+                        }
+                        }
+                            i = c;
+                        }
+                    }
+                }
+                }
+                else{
+                for(int w = 0; w < sortedValue.size(); w++){
+                    int r = w;
+                    int t = 0;
+                    while(t < searchWord.length()){
+
+                if (toupper(sortedValue[w]) == toupper(searchWord.at(t))){
+                    if (t == (searchWord.length() - 1)){
+                        if(advArray.size() == 3){
+                        if(valueType == "Member Name" && advArray[0] != ""){
+                            for(int i = 0; i < topLevelValue.size(); i++){
+                                int c = i;
+                                int z = 0;
+                                while(z < advArray[0].length()){
+
+                            if (toupper(topLevelValue[i]) == toupper(advArray[0].at(z))){
+                                if (z == (advArray[0].length() - 1)){
+                                    sortedTree.emplace(sortedValue, records[x]);
+                                    z=99999;
+                                    c=99999;
+                                    m=99999;
+                                }
+                                i++;
+                                z++;
+                            }
+                            else{
+                                z = 99999;
+                            }
+                            }
+                                i = c;
+                            }
+                        }
+                        if(valueType == "Division" && advArray[1] != ""){
+                            for(int i = 0; i < topLevelValue.size(); i++){
+                                int c = i;
+                                int z = 0;
+                                while(z < advArray[1].length()){
+
+                            if (toupper(topLevelValue[i]) == toupper(advArray[1].at(z))){
+                                if (z == (advArray[1].length() - 1)){
+                                    sortedTree.emplace(sortedValue, records[x]);
+                                    z=99999;
+                                    c=99999;
+                                    m=99999;
+                                }
+                                i++;
+                                z++;
+                            }
+                            else{
+                                z = 99999;
+                            }
+                            }
+                                i = c;
+                            }
+                        }
+                        if(valueType == "Program" && advArray[2] != ""){
+                            for(int i = 0; i < topLevelValue.size(); i++){
+                                int c = i;
+                                int z = 0;
+                                while(z < advArray[2].length()){
+
+                            if (toupper(topLevelValue[i]) == toupper(advArray[2].at(z))){
+                                if (z == (advArray[2].length() - 1)){
+                                    sortedTree.emplace(sortedValue, records[x]);
+                                    z=99999;
+                                    c=99999;
+                                    m=99999;
+                                }
+                                i++;
+                                z++;
+                            }
+                            else{
+                                z = 99999;
+                            }
+                            }
+                                i = c;
+                            }
+                        }
+                        }
+                        if(advArray.size() == 4){
+                        if(valueType == "Member Name" && advArray[0] != ""){
+                            for(int i = 0; i < topLevelValue.size(); i++){
+                                int c = i;
+                                int z = 0;
+                                while(z < advArray[0].length()){
+
+                            if (toupper(topLevelValue[i]) == toupper(advArray[0].at(z))){
+                                if (z == (advArray[0].length() - 1)){
+                                    sortedTree.emplace(sortedValue, records[x]);
+                                    z=99999;
+                                    c=99999;
+                                    m=99999;
+                                }
+                                i++;
+                                z++;
+                            }
+                            else{
+                                z = 99999;
+                            }
+                            }
+                                i = c;
+                            }
+                        }
+                        if(valueType == "Type" && advArray[1] != ""){
+                            for(int i = 0; i < topLevelValue.size(); i++){
+                                int c = i;
+                                int z = 0;
+                                while(z < advArray[1].length()){
+
+                            if (toupper(topLevelValue[i]) == toupper(advArray[1].at(z))){
+                                if (z == (advArray[1].length() - 1)){
+                                    sortedTree.emplace(sortedValue, records[x]);
+                                    z=99999;
+                                    c=99999;
+                                    m=99999;
+                                }
+                                i++;
+                                z++;
+                            }
+                            else{
+                                z = 99999;
+                            }
+                            }
+                                i = c;
+                            }
+                        }
+                        if(valueType == "Role" && advArray[2] != ""){
+                            for(int i = 0; i < topLevelValue.size(); i++){
+                                int c = i;
+                                int z = 0;
+                                while(z < advArray[2].length()){
+
+                            if (toupper(topLevelValue[i]) == toupper(advArray[2].at(z))){
+                                if (z == (advArray[2].length() - 1)){
+                                    sortedTree.emplace(sortedValue, records[x]);
+                                    z=99999;
+                                    c=99999;
+                                    m=99999;
+                                }
+                                i++;
+                                z++;
+                            }
+                            else{
+                                z = 99999;
+                            }
+                            }
+                                i = c;
+                            }
+                        }
+                        if(valueType == "Title" && advArray[3] != ""){
+                            for(int i = 0; i < topLevelValue.size(); i++){
+                                int c = i;
+                                int z = 0;
+                                while(z < advArray[3].length()){
+
+                            if (toupper(topLevelValue[i]) == toupper(advArray[3].at(z))){
+                                if (z == (advArray[3].length() - 1)){
+                                    sortedTree.emplace(sortedValue, records[x]);
+                                    z=99999;
+                                    c=99999;
+                                    m=99999;
+                                }
+                                i++;
+                                z++;
+                            }
+                            else{
+                                z = 99999;
+                            }
+                            }
+                                i = c;
+                            }
+                        }
+                        }
+                        if(advArray.size() == 5){
+                        if(valueType == "Member Name" && advArray[0] != ""){
+                            for(int i = 0; i < topLevelValue.size(); i++){
+                                int c = i;
+                                int z = 0;
+                                while(z < advArray[0].length()){
+
+                            if (toupper(topLevelValue[i]) == toupper(advArray[0].at(z))){
+                                if (z == (advArray[0].length() - 1)){
+                                    sortedTree.emplace(sortedValue, records[x]);
+                                    z=99999;
+                                    c=99999;
+                                    m=99999;
+                                }
+                                i++;
+                                z++;
+                            }
+                            else{
+                                z = 99999;
+                            }
+                            }
+                                i = c;
+                            }
+                        }
+                        if(valueType == "FundingType" && advArray[1] != ""){
+                            for(int i = 0; i < topLevelValue.size(); i++){
+                                int c = i;
+                                int z = 0;
+                                while(z < advArray[1].length()){
+
+                            if (toupper(topLevelValue[i]) == toupper(advArray[1].at(z))){
+                                if (z == (advArray[1].length() - 1)){
+                                    sortedTree.emplace(sortedValue, records[x]);
+                                    z=99999;
+                                    c=99999;
+                                    m=99999;
+                                }
+                                i++;
+                                z++;
+                            }
+                            else{
+                                z = 99999;
+                            }
+                            }
+                                i = c;
+                            }
+                        }
+                        if(valueType == "Status" && advArray[2] != ""){
+                            for(int i = 0; i < topLevelValue.size(); i++){
+                                int c = i;
+                                int z = 0;
+                                while(z < advArray[2].length()){
+
+                            if (toupper(topLevelValue[i]) == toupper(advArray[2].at(z))){
+                                if (z == (advArray[2].length() - 1)){
+                                    sortedTree.emplace(sortedValue, records[x]);
+                                    z=99999;
+                                    c=99999;
+                                    m=99999;
+                                }
+                                i++;
+                                z++;
+                            }
+                            else{
+                                z = 99999;
+                            }
+                            }
+                                i = c;
+                            }
+                        }
+                        if(valueType == "Role" && advArray[3] != ""){
+                            for(int i = 0; i < topLevelValue.size(); i++){
+                                int c = i;
+                                int z = 0;
+                                while(z < advArray[3].length()){
+
+                            if (toupper(topLevelValue[i]) == toupper(advArray[3].at(z))){
+                                if (z == (advArray[3].length() - 1)){
+                                    sortedTree.emplace(sortedValue, records[x]);
+                                    z=99999;
+                                    c=99999;
+                                    m=99999;
+                                }
+                                i++;
+                                z++;
+                            }
+                            else{
+                                z = 99999;
+                            }
+                            }
+                                i = c;
+                            }
+                        }
+                        if(valueType == "Title" && advArray[4] != ""){
+                            for(int i = 0; i < topLevelValue.size(); i++){
+                                int c = i;
+                                int z = 0;
+                                while(z < advArray[4].length()){
+
+                            if (toupper(topLevelValue[i]) == toupper(advArray[4].at(z))){
+                                if (z == (advArray[4].length() - 1)){
+                                    sortedTree.emplace(sortedValue, records[x]);
+                                    z=99999;
+                                    c=99999;
+                                    m=99999;
+                                }
+                                i++;
+                                z++;
+                            }
+                            else{
+                                z = 99999;
+                            }
+                            }
+                                i = c;
+                            }
+                        }
+                    }
+                        t=99999;
+                        r=99999;
+                    }
+                    w++;
+                    t++;
+                }
+                else{
+                    t = 99999;
+                }
+                }
+                    w = r;
+                }
+            }
+            }
+
+}
+        }
+    }
+
+    else{
     for (size_t x = 0; x < records.size(); x++) {
         topLevelValue = records[x]->at(sortFieldIndices[0]);
 
@@ -618,6 +1252,7 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
             }
         }
         }
+    }
     }
 
     // analyze from there

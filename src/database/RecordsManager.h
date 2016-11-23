@@ -35,26 +35,27 @@ public:
 
     static std::vector<std::string> list(int n, ...);
 
-    QString createQStringForGrants(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord);
+    QString createQStringForGrants(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray);
     QList<QVariant> createHeadersListForGrants(std::string topLevel);
-    QString createQStringForPres(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord);
+    QString createQStringForPres(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray);
     QList<QVariant> createHeadersListForPres(std::string topLevel);
-    QString createQStringForPubs(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord);
+    QString createQStringForPubs(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray);
     QList<QVariant> createHeadersListForPubs(std::string topLevel);
-    QString createQStringForTeaching(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord);
+    QString createQStringForTeaching(int startYear, int endYear, const std::vector<std::string> &sortFields, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray);
     QList<QVariant> createHeadersListForTeaching(std::string topLevel);
 
-    std::vector<std::pair<std::string, int>> getCountByName(int startYear, int endYear, char filterStart, char filterEnd, std::string searchWord);
+    std::vector<std::pair<std::string, int>> getCountByName(int startYear, int endYear, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray);
     std::vector<std::pair<std::string, int>> getCountTuple(int startYear, int endYear,
-            const std::vector<std::string> &headers, const std::vector<std::string> &matchString, char filterStart, char filterEnd, std::string searchWord);
+            const std::vector<std::string> &headers, const std::vector<std::string> &matchString, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray);
     std::vector<std::pair<std::string, double>> getTotalsTuple(int startYear, int endYear,
-            const std::vector<std::string> &headers, const std::vector<std::string> &matchStrings, std::string accCol, char filterStart, char filterEnd, std::string searchWord);
+            const std::vector<std::string> &headers, const std::vector<std::string> &matchStrings, std::string accCol, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray);
 
 private:
     Manager manager;
     BasicRecord headers;
     QLocale locale;
 
+    std::string null;
     double parseStringToDouble(std::string);
     std::string removeTrailingZeros(double d);
     std::string analyze(
@@ -64,7 +65,8 @@ private:
             std::string countCol,
             char filterStart,
             char filterEnd,
-            std::string searchWord);
+            std::string searchWord,
+            std::vector<std::string> advArray);
     std::string analyze(
             int startYear,
             int endYear,
@@ -74,7 +76,8 @@ private:
             std::string countCol,
             char filterStart,
             char filterEnd,
-            std::string searchWord);
+            std::string searchWord,
+            std::vector<std::string> advArray);
     std::string analyze(StringTree sortedTree,
             const std::vector<int> &sortFields,
             const std::vector<int> &accs,

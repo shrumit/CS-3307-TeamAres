@@ -34,7 +34,11 @@ HEADERS += \
     gui/qcustomplot.h \
     tests/FileLoadTest.h \
     tests/InputValidityTest.h \
-    tests/DateTest.h
+    tests/DateTest.h \
+    gui/teachadvsearch.h \
+    gui/fundadvsearch.h \
+    gui/presadvsearch.h \
+    gui/pubadvsearch.h
 
 
 SOURCES += \
@@ -56,12 +60,20 @@ SOURCES += \
     gui/qcustomplot.cpp \
     tests/InputValidityTest.cpp \
     tests/FileLoadTest.cpp \
-    tests/DateTest.cpp
+    tests/DateTest.cpp \
+    gui/teachadvsearch.cpp \
+    gui/fundadvsearch.cpp \
+    gui/presadvsearch.cpp \
+    gui/pubadvsearch.cpp
 
 FORMS += \
     gui/customsort.ui \
     gui/mainwindow.ui \
-    gui/ErrorEditDialog.ui
+    gui/ErrorEditDialog.ui \
+    gui/teachadvsearch.ui \
+    gui/fundadvsearch.ui \
+    gui/presadvsearch.ui \
+    gui/pubadvsearch.ui
 
 RESOURCES += \
     images.qrc
