@@ -63,7 +63,7 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
         }
         row++;
     }
-    qDebug() << "errors:" << errors.size() << " / error_cells:" << error_cells.size();
+//    qDebug() << "errors:" << errors.size() << " / error_cells:" << error_cells.size();
     error_cells_original = error_cells; // preserve a copy of the original set
     ui->errorLabel->setText(QString::number(error_cells.size()) + "  mandatory cells missing");
     error_lock = false;
@@ -198,7 +198,7 @@ void ErrorEditDialog::on_tableWidget_itemChanged(QTableWidgetItem *item)
         ui->errorLabel->setText(QString::number(error_cells.size()) + " mandatory cells missing");
     }
 
-    qDebug() << item->column() << "," << item->row();
+//    qDebug() << item->column() << "," << item->row();
 }
 
 void ErrorEditDialog::on_cancel_clicked()
