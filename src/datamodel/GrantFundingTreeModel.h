@@ -8,7 +8,7 @@ class GrantFundingTreeModel : public TreeModel
 public:
     GrantFundingTreeModel(RecordsManager*, QObject *parent = 0);
     ~GrantFundingTreeModel();
-    void setupModel(int start, int end, std::vector<std::string> sortFields, char filterStart, char filterEnd, std::string searchWord);
+    void setupModel(int start, int end, std::vector<std::string> sortFields, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray );
 };
 
 #endif // GRANTFUNDINGTREEMODEL_H

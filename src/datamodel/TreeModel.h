@@ -61,7 +61,7 @@ public:
 	QModelIndex parent(const QModelIndex &index) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex &parent = QModelIndex()) const override;
-    virtual void setupModel(int start, int end, std::vector<std::string> sortFields, char filterStart, char filterEnd, std::string searchWord) = 0;
+    virtual void setupModel(int start, int end, std::vector<std::string> sortFields, char filterStart, char filterEnd, std::string searchWord, std::vector<std::string> advArray) = 0;
 
 protected:
 	void setupModelData(const QStringList &lines, TreeItem *parent);

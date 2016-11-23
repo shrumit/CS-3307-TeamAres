@@ -5,6 +5,10 @@
 #include <QMainWindow>
 #include <vector>
 #include "ErrorEditDialog.h"
+#include "teachadvsearch.h"
+#include "fundadvsearch.h"
+#include "presadvsearch.h"
+#include "pubadvsearch.h"
 
 class RecordsManager;
 class CSVReader;
@@ -109,6 +113,11 @@ private slots:
 
     void on_pubExportButton_clicked();
 
+    void on_fund_adv_search_button_clicked();
+    void on_pres_adv_search_button_clicked();
+    void on_pub_adv_search_button_clicked();
+    void on_teach_adv_search_button_clicked();
+
 private:
     static std::vector<std::string> GRANTS_MANFIELDS, PRES_MANFIELDS, PUBS_MANFIELDS, TEACH_MANFIELDS;
 
@@ -120,6 +129,13 @@ private:
 
     Ui::MainWindow* ui;
     QPrinter* printer;
+
+    teachAdvSearch* puw;
+
+    std::vector<std::string> teachAdvArray = {"","",""};
+    std::vector<std::string> fundAdvArray = {"","","","",""};
+    std::vector<std::string> presAdvArray = {"","","",""};
+    std::vector<std::string> pubAdvArray = {"","","",""};
 
     ErrorEditDialog* diag;
 
