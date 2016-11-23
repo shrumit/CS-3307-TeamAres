@@ -964,29 +964,75 @@ void MainWindow::on_fund_pie_button_toggled() { ui->fund_graph_stackedWidget->se
 QString MainWindow::indexToString(int i){
     QString check;
     switch(i){
-        case -1:
-            check = "You loaded an incorrect file type";
-            break;
         case 0:
-            check = "You loaded a teach file";
+            check = " You loaded a teach file";
             break;
         case 1:
-            check = "You loaded a publications file";
+            check = " You loaded a publications file";
             break;
         case 2:
-            check = "You loaded a presentations file";
+            check = " You loaded a presentations file";
             break;
         case 3:
-            check = "You loaded a grants and funding file";
+            check = " You loaded a grants and funding file";
             break;
     }
     return check;
 }
 
 //0 - 3 is {Teaching, Publications, Presentations, Grands & Funding)
-//Given an index and a path, this functino will identfiy whether or not the headers don't match up.
+//Given an index and a path, this function will identfiy whether or not the headers don't match up.
 int MainWindow::checkFileString(int index, QString path){
 
+    CSVReader reader;
+    std::vector<std::string> header;
+
+    reader = CSVReader(path.toStdString());
+    header = reader.getHeaders();
+
+    bool a = true;
+    bool b = true;
+    bool c = true;
+    bool d = true;
+
+    //teach
+    for (unsigned int i = 0; i < TEACH_MANFIELDS.size() ; ++i) {
+                if (std::find(header.begin(), header.end(), TEACH_MANFIELDS[i]) == header.end()) { //if entry from mandatory field vector missing, failure, invalid csv
+                    //check what type of file it is.
+                    a = false;
+                    }
+                }
+    //publications
+        for (unsigned int i = 0; i < PUBS_MANFIELDS.size() ; ++i) { //verify csv
+            if (std::find(header.begin(), header.end(), PUBS_MANFIELDS[i]) == header.end()) { //if entry from mandatory field vector missing, failure, invalid csv
+
+                std::vector<std::string> expandedCols = {"Member Name", "Type", "Status Date *", "Role *", "Title"};
+                for (unsigned int i = 0; i < expandedCols.size() ; ++i) {
+                    if (std::find(header.begin(), header.end(), expandedCols[i]) == header.end()) { //hotfix for Publications_expanded.csv having different colums
+                        b = false;
+                    }
+                }
+            }
+        }
+
+    //presentations
+        for (unsigned int i = 0; i < PRES_MANFIELDS.size() ; ++i) { //verify csv
+            if (std::find(header.begin(), header.end(), PRES_MANFIELDS[i]) == header.end()) { //if entry from mandatory field vector missing, failure, invalid csv
+                c = false;
+            }
+        }
+
+   //funding
+        for (unsigned int i = 0; i < GRANTS_MANFIELDS.size() ; ++i) { //verify csv
+            if (std::find(header.begin(), header.end(), GRANTS_MANFIELDS[i]) == header.end()) { //if entry from mandatory field vector missing, failure, invalid csv
+                d = false;
+            }
+        }
+
+    if(a) return 0;
+    if(b) return 1;
+    if(c) return 2;
+    if(d) return 3;
 }
 
 //0 - 3 is {Teaching, Publications, Presentations, Grands & Funding)
@@ -1034,7 +1080,8 @@ bool MainWindow::load_teach(QString path, bool multi_file) {
         return true;
     } else {
         if (!multi_file) {
-            QMessageBox::critical(this, "Invalid File", "Not a valid teaching file.");
+            QString checkString = indexToString(checkFileString(TEACH, path));
+            QMessageBox::critical(this, "Invalid File", "Not a valid teaching file." + checkString);
             on_teach_load_file_clicked();
         }
     }
@@ -1085,7 +1132,8 @@ bool MainWindow::load_pub(QString path, bool multi_file) {
         return true;
     } else {
         if (!multi_file) {
-            QMessageBox::critical(this, "Invalid File", "Not a valid publications file.");
+            QString checkString = indexToString(checkFileString(PUBLICATIONS, path));
+            QMessageBox::critical(this, "Invalid File", "Not a valid publications file." + checkString);
             on_pub_load_file_clicked();
         }
     }
@@ -1136,7 +1184,8 @@ bool MainWindow::load_pres(QString path, bool multi_file) {
         return true;
     } else {
         if (!multi_file) {
-            QMessageBox::critical(this, "Invalid File", "Not a valid presentations file.");
+            QString checkString = indexToString(checkFileString(PRESENTATIONS, path));
+            QMessageBox::critical(this, "Invalid File", "Not a valid presentations file." + checkString);
             on_pres_load_file_clicked();
         }
     }
@@ -1187,7 +1236,8 @@ bool MainWindow::load_fund(QString path, bool multi_file) {
         return true;
     } else {
         if (!multi_file) {
-            QMessageBox::critical(this, "Invalid File", "Not a valid grants and funding file.");
+            QString checkString = indexToString(checkFileString(FUNDING, path));
+            QMessageBox::critical(this, "Invalid File", "Not a valid grants and funding file." + checkString);
             on_fund_load_file_clicked();
         }
     }
