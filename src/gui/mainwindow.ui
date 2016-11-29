@@ -236,7 +236,7 @@ p, li { white-space: pre-wrap; }
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <property name="usesScrollButtons">
           <bool>false</bool>
@@ -846,6 +846,9 @@ p, li { white-space: pre-wrap; }
            </item>
            <item row="7" column="12">
             <widget class="QRadioButton" name="teach_line_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Line Chart</string>
              </property>
@@ -853,6 +856,9 @@ p, li { white-space: pre-wrap; }
            </item>
            <item row="7" column="14">
             <widget class="QRadioButton" name="teach_scatter_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Scatter Plot</string>
              </property>
@@ -1417,13 +1423,19 @@ p, li { white-space: pre-wrap; }
            </item>
            <item row="4" column="12">
             <widget class="QRadioButton" name="pub_line_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Line Chart</string>
              </property>
             </widget>
            </item>
            <item row="4" column="14">
-            <widget class="QRadioButton" name="pub_scatter_Button">
+            <widget class="QRadioButton" name="pub_scatter_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Scatter Plot</string>
              </property>
@@ -1988,6 +2000,9 @@ p, li { white-space: pre-wrap; }
            </item>
            <item row="4" column="12">
             <widget class="QRadioButton" name="pres_line_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Line Chart</string>
              </property>
@@ -1995,6 +2010,9 @@ p, li { white-space: pre-wrap; }
            </item>
            <item row="4" column="14">
             <widget class="QRadioButton" name="pres_scatter_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Scatter Plot</string>
              </property>
@@ -2562,6 +2580,9 @@ p, li { white-space: pre-wrap; }
            </item>
            <item row="4" column="12">
             <widget class="QRadioButton" name="fund_line_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Line Chart</string>
              </property>
@@ -2569,6 +2590,9 @@ p, li { white-space: pre-wrap; }
            </item>
            <item row="4" column="14">
             <widget class="QRadioButton" name="fund_scatter_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Scatter Plot</string>
              </property>

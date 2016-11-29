@@ -951,12 +951,23 @@ void MainWindow::on_fund_delete_sort_clicked() {
     }
 }
 
+void MainWindow::on_teach_scatter_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(3);}
+void MainWindow::on_teach_line_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_teach_bar_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_teach_pie_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(0);}
+
+void MainWindow::on_pub_scatter_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(3);}
+void MainWindow::on_pub_line_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_pub_bar_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_pub_pie_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(0);}
+
+void MainWindow::on_pres_scatter_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(3);}
+void MainWindow::on_pres_line_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_pres_bar_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_pres_pie_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(0);}
+
+void MainWindow::on_fund_scatter_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(3);}
+void MainWindow::on_fund_line_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_fund_bar_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_fund_pie_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(0);}
 
@@ -1053,6 +1064,8 @@ bool MainWindow::load_teach(QString path, bool multi_file) {
         ui->teach_filter_to->setEnabled(true);
         ui->teach_pie_button->setEnabled(true);
         ui->teach_bar_button->setEnabled(true);
+        ui->teach_line_button->setEnabled(true);
+        ui->teach_scatter_button->setEnabled(true);
         ui->teach_to_label->setEnabled(true);
         ui->teach_sort_label->setEnabled(true);
         ui->teach_filter->setEnabled(true);
@@ -1106,6 +1119,8 @@ bool MainWindow::load_pub(QString path, bool multi_file) {
         ui->pub_filter_to->setEnabled(true);
         ui->pub_pie_button->setEnabled(true);
         ui->pub_bar_button->setEnabled(true);
+        ui->pub_line_button->setEnabled(true);
+        ui->pub_scatter_button->setEnabled(true);
         ui->pub_to_label->setEnabled(true);
         ui->pub_sort_label->setEnabled(true);
         ui->pub_filter->setEnabled(true);
@@ -1158,6 +1173,8 @@ bool MainWindow::load_pres(QString path, bool multi_file) {
         ui->pres_filter_to->setEnabled(true);
         ui->pres_pie_button->setEnabled(true);
         ui->pres_bar_button->setEnabled(true);
+        ui->pres_line_button->setEnabled(true);
+        ui->pres_scatter_button->setEnabled(true);
         ui->pres_to_label->setEnabled(true);
         ui->pres_sort_label->setEnabled(true);
         ui->pres_filter->setEnabled(true);
@@ -1210,6 +1227,8 @@ bool MainWindow::load_fund(QString path, bool multi_file) {
         ui->fund_filter_to->setEnabled(true);
         ui->fund_pie_button->setEnabled(true);
         ui->fund_bar_button->setEnabled(true);
+        ui->fund_line_button->setEnabled(true);
+        ui->fund_scatter_button->setEnabled(true);
         ui->fund_to_label->setEnabled(true);
         ui->fund_sort_label->setEnabled(true);
         ui->fund_filter->setEnabled(true);
