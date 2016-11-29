@@ -1044,6 +1044,8 @@ int MainWindow::checkFileString(QString path){
     if(b) return 1;
     if(c) return 2;
     if(d) return 3;
+    //this never happens but I make compiler happy. This method is only called when a type is already made
+    else return -1;
 }
 
 //0 - 3 is {Teaching, Publications, Presentations, Grands & Funding)
