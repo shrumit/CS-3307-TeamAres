@@ -236,7 +236,7 @@ p, li { white-space: pre-wrap; }
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>2</number>
          </property>
          <property name="usesScrollButtons">
           <bool>false</bool>
@@ -685,7 +685,7 @@ p, li { white-space: pre-wrap; }
                  <number>0</number>
                 </property>
                 <property name="currentIndex">
-                 <number>0</number>
+                 <number>3</number>
                 </property>
                 <widget class="QWidget" name="teach_pie_page">
                  <layout class="QGridLayout" name="gridLayout_10">
@@ -807,6 +807,8 @@ p, li { white-space: pre-wrap; }
                   </item>
                  </layout>
                 </widget>
+                <widget class="QWidget" name="teach_line_page"/>
+                <widget class="QWidget" name="teach_scatter_page"/>
                </widget>
               </item>
               <item row="0" column="0">
@@ -898,7 +900,7 @@ p, li { white-space: pre-wrap; }
                  <number>0</number>
                 </property>
                 <property name="currentIndex">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <widget class="QWidget" name="pub_pie_page">
                  <layout class="QGridLayout" name="gridLayout_18">
@@ -1019,6 +1021,12 @@ p, li { white-space: pre-wrap; }
                    </widget>
                   </item>
                  </layout>
+                </widget>
+                <widget class="QWidget" name="pub_line_page"/>
+                <widget class="QWidget" name="pub_scatter_page">
+                 <property name="toolTipDuration">
+                  <number>-1</number>
+                 </property>
                 </widget>
                </widget>
               </item>
@@ -1475,7 +1483,7 @@ p, li { white-space: pre-wrap; }
                  <number>0</number>
                 </property>
                 <property name="currentIndex">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <widget class="QWidget" name="pres_pie_page">
                  <layout class="QGridLayout" name="gridLayout_11">
@@ -1597,6 +1605,8 @@ p, li { white-space: pre-wrap; }
                   </item>
                  </layout>
                 </widget>
+                <widget class="QWidget" name="pres_line_page"/>
+                <widget class="QWidget" name="pres_scatter_page"/>
                </widget>
               </item>
               <item row="0" column="0">
@@ -2287,7 +2297,7 @@ p, li { white-space: pre-wrap; }
                  <number>0</number>
                 </property>
                 <property name="currentIndex">
-                 <number>0</number>
+                 <number>3</number>
                 </property>
                 <widget class="QWidget" name="fund_pie_page">
                  <layout class="QGridLayout" name="gridLayout_9">
@@ -2409,6 +2419,8 @@ p, li { white-space: pre-wrap; }
                   </item>
                  </layout>
                 </widget>
+                <widget class="QWidget" name="fund_line_page"/>
+                <widget class="QWidget" name="fund_scatter_page"/>
                </widget>
               </item>
               <item row="0" column="0">
