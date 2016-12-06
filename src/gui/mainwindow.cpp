@@ -143,15 +143,11 @@ void MainWindow::on_actionSave_All_triggered() {
         while(i<temp.size()){
             z = 0;
             temp3="";
-            while(z<temp2.size()-1){
-                if(z==1||z==4){
-                    temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
-                    z++;
-                }
-                temp3 = temp3 + temp[i]->at(z) + ",";
+            while(z<temp[i]->size()){
+                temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
                 z++;
             }
-            temp3 = temp3 + temp[i]->at(z) + "\n";
+            temp3 = temp3 + "\n";
             fundSave << temp3;
             i++;
         }
@@ -175,15 +171,11 @@ void MainWindow::on_actionSave_All_triggered() {
         while(i<temp.size()){
             z = 0;
             temp3="";
-            while(z<temp2.size()-1){
-                if(z==1||z==4){
-                    temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
-                    z++;
-                }
-                temp3 = temp3 + temp[i]->at(z) + ",";
+            while(z<temp[i]->size()){
+                temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
                 z++;
             }
-            temp3 = temp3 + temp[i]->at(z) + "\n";
+            temp3 = temp3 + "\n";
             presSave << temp3;
             i++;
         }
@@ -207,15 +199,11 @@ void MainWindow::on_actionSave_All_triggered() {
         while(i<temp.size()){
             z = 0;
             temp3="";
-            while(z<temp2.size()-1){
-                if(z==1||z==4){
-                    temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
-                    z++;
-                }
-                temp3 = temp3 + temp[i]->at(z) + ",";
+            while(z<temp[i]->size()){
+                temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
                 z++;
             }
-            temp3 = temp3 + temp[i]->at(z) + "\n";
+            temp3 = temp3 + "\n";
             pubSave << temp3;
             i++;
         }
@@ -238,16 +226,12 @@ void MainWindow::on_actionSave_All_triggered() {
         i=0;
         while(i<temp.size()){
             z = 0;
-            temp3 = "";
-            while(z<temp2.size()-1){
-                if(z==1||z==4){
-                    temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
-                    z++;
-                }
-                temp3 = temp3 + temp[i]->at(z) + ',';
+            temp3="";
+            while(z<temp[i]->size()){
+                temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
                 z++;
             }
-            temp3 = temp3 + temp[i]->at(z) + "\n";
+            temp3 = temp3 + "\n";
             teachSave << temp3;
             i++;
         }
