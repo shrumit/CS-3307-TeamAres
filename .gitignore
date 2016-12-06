@@ -39,3 +39,4 @@ build-TeamPeach-Desktop_Qt_5_7_0_GCC_64bit-Debug/
 .gitignore~
 
 >>>>>>> issue12
+*.csv

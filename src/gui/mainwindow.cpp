@@ -127,16 +127,100 @@ void MainWindow::on_actionSave_All_triggered() {
     std::ofstream load("save.txt");
     if(!fundPath.isEmpty()){
         load<<fundPath.toStdString()<<"\n";
+        std::vector<BasicRecord*> temp = funddb->findRecordsInRange(0,9999);
+        int i = 0;
+        int z = 0;
+        std::string temp2 = fundPath.toStdString();
+        std::ofstream fundSave(fundPath.toStdString());
+        std::string temp3;
+        while(i<temp.size()){
+            z = 0;
+            temp3="";
+            while(z<26){
+                temp3 = temp3 + temp[i]->at(z) + ",";
+                z++;
+            }
+            temp3 = temp3 + temp[i]->at(z) + "\n";
+            fundSave << temp3;
+            i++;
+        }
+        fundSave.close();
     }
     if(!presPath.isEmpty()){
         load<<presPath.toStdString()<<"\n";
+        std::vector<BasicRecord*> temp = presdb->findRecordsInRange(0,9999);
+        int i = 0;
+        int z = 0;
+        std::string temp2 = presPath.toStdString();
+        std::ofstream presSave(presPath.toStdString());
+        std::string temp3;
+        while(i<temp.size()){
+            z = 0;
+            temp3="";
+            while(z<26){
+                temp3 = temp3 + temp[i]->at(z) + ",";
+                z++;
+            }
+            temp3 = temp3 + temp[i]->at(z) + "\n";
+            presSave << temp3;
+            i++;
+        }
+        presSave.close();
     }
     if(!pubPath.isEmpty()){
         load<<pubPath.toStdString()<<"\n";
+        std::vector<BasicRecord*> temp = pubdb->findRecordsInRange(0,9999);
+        int i = 0;
+        int z = 0;
+        std::string temp2 = pubPath.toStdString();
+        std::ofstream pubSave(pubPath.toStdString());
+        std::string temp3;
+        while(i<temp.size()){
+            z = 0;
+            temp3="";
+            while(z<26){
+                temp3 = temp3 + temp[i]->at(z) + ",";
+                z++;
+            }
+            temp3 = temp3 + temp[i]->at(z) + "\n";
+            pubSave << temp3;
+            i++;
+        }
+        pubSave.close();
     }
     if(!teachPath.isEmpty()){
         load<<teachPath.toStdString()<<"\n";
+        std::vector<BasicRecord*> temp = teachdb->findRecordsInRange(0,9999);
+        BasicRecord temp2 = teachdb->getHeaders();
+        int i = 0;
+        int z = 0;
+        std::ofstream teachSave(teachPath.toStdString());
+        std::string temp3 = "";
+        while(i<temp2.size()-1){
+         temp3 = temp3 + temp2.at(i) + ",";
+         i++;
+        }
+        temp3 = temp3 + temp2.at(i) + "\n";
+        teachSave << temp3;
+        i=0;
+        while(i<temp.size()){
+            z = 0;
+            temp3 = "";
+            while(z<26){
+                if(z==1||z==4){
+                    temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
+                    z++;
+                }
+                temp3 = temp3 + temp[i]->at(z) + ',';
+                z++;
+            }
+            temp3 = temp3 + temp[i]->at(z) + "\n";
+            teachSave << temp3;
+            i++;
+        }
+        teachSave.close();
     }
+
     load.close();
 }
 
