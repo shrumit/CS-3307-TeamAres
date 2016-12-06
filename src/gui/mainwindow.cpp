@@ -206,7 +206,7 @@ void MainWindow::on_actionSave_All_triggered() {
         while(i<temp.size()){
             z = 0;
             temp3 = "";
-            while(z<26){
+            while(z<27){
                 if(z==1||z==4){
                     temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
                     z++;
