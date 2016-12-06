@@ -85,6 +85,26 @@ MainWindow::MainWindow(QWidget *parent) :
     //Setup printer
     printer = new QPrinter();
 
+    std::ifstream save("save.txt");
+    std::string str;
+    QStringList files;
+    QString qstr;
+    std::getline(save, str);
+    if(str!=""){
+        load* puw = new load();
+        int ret = puw->exec();
+        if (ret) {
+            while(str!=""){
+                qstr = QString::fromStdString(str);
+                files << qstr;
+                std::getline(save, str);
+            }
+        }
+    }
+
+    save.close();
+    loadFileUnspecifiedType(files);
+
     dateChanged = {false, false, false, false};
 
 }
@@ -102,6 +122,22 @@ MainWindow::~MainWindow() {
     delete pubdb;
     delete teachdb;
     delete printer;
+}
+void MainWindow::on_actionSave_All_triggered() {
+    std::ofstream load("save.txt");
+    if(!fundPath.isEmpty()){
+        load<<fundPath.toStdString()<<"\n";
+    }
+    if(!presPath.isEmpty()){
+        load<<presPath.toStdString()<<"\n";
+    }
+    if(!pubPath.isEmpty()){
+        load<<pubPath.toStdString()<<"\n";
+    }
+    if(!teachPath.isEmpty()){
+        load<<teachPath.toStdString()<<"\n";
+    }
+    load.close();
 }
 
 void MainWindow::on_actionLoad_file_triggered() {

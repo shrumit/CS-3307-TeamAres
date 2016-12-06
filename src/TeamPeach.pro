@@ -38,7 +38,8 @@ HEADERS += \
     gui/teachadvsearch.h \
     gui/fundadvsearch.h \
     gui/presadvsearch.h \
-    gui/pubadvsearch.h
+    gui/pubadvsearch.h \
+    gui/load.h
 
 
 SOURCES += \
@@ -64,7 +65,8 @@ SOURCES += \
     gui/teachadvsearch.cpp \
     gui/fundadvsearch.cpp \
     gui/presadvsearch.cpp \
-    gui/pubadvsearch.cpp
+    gui/pubadvsearch.cpp \
+    gui/load.cpp
 
 FORMS += \
     gui/customsort.ui \
@@ -73,7 +75,8 @@ FORMS += \
     gui/teachadvsearch.ui \
     gui/fundadvsearch.ui \
     gui/presadvsearch.ui \
-    gui/pubadvsearch.ui
+    gui/pubadvsearch.ui \
+    gui/load.ui
 
 RESOURCES += \
     images.qrc

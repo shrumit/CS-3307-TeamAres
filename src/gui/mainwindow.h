@@ -9,6 +9,9 @@
 #include "fundadvsearch.h"
 #include "presadvsearch.h"
 #include "pubadvsearch.h"
+#include "load.h"
+#include <iostream>
+#include <fstream>
 
 class RecordsManager;
 class CSVReader;
@@ -50,6 +53,7 @@ private slots:
     void on_pres_new_sort_clicked();
     void on_fund_new_sort_clicked();
 
+    void on_actionSave_All_triggered();
     void on_actionLoad_file_triggered();
     void loadFileUnspecifiedType(QStringList filePaths);
 
