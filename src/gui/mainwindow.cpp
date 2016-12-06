@@ -130,13 +130,24 @@ void MainWindow::on_actionSave_All_triggered() {
         std::vector<BasicRecord*> temp = funddb->findRecordsInRange(0,9999);
         int i = 0;
         int z = 0;
-        std::string temp2 = fundPath.toStdString();
+        BasicRecord temp2 = funddb->getHeaders();
         std::ofstream fundSave(fundPath.toStdString());
-        std::string temp3;
+        std::string temp3 = "";
+        while(i<temp2.size()-1){
+         temp3 = temp3 + temp2.at(i) + ",";
+         i++;
+        }
+        temp3 = temp3 + temp2.at(i) + "\n";
+        fundSave << temp3;
+        i=0;
         while(i<temp.size()){
             z = 0;
             temp3="";
-            while(z<26){
+            while(z<temp2.size()-1){
+                if(z==1||z==4){
+                    temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
+                    z++;
+                }
                 temp3 = temp3 + temp[i]->at(z) + ",";
                 z++;
             }
@@ -151,13 +162,24 @@ void MainWindow::on_actionSave_All_triggered() {
         std::vector<BasicRecord*> temp = presdb->findRecordsInRange(0,9999);
         int i = 0;
         int z = 0;
-        std::string temp2 = presPath.toStdString();
+        BasicRecord temp2 = presdb->getHeaders();
         std::ofstream presSave(presPath.toStdString());
-        std::string temp3;
+        std::string temp3 = "";
+        while(i<temp2.size()-1){
+         temp3 = temp3 + temp2.at(i) + ",";
+         i++;
+        }
+        temp3 = temp3 + temp2.at(i) + "\n";
+        presSave << temp3;
+        i=0;
         while(i<temp.size()){
             z = 0;
             temp3="";
-            while(z<26){
+            while(z<temp2.size()-1){
+                if(z==1||z==4){
+                    temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
+                    z++;
+                }
                 temp3 = temp3 + temp[i]->at(z) + ",";
                 z++;
             }
@@ -172,13 +194,24 @@ void MainWindow::on_actionSave_All_triggered() {
         std::vector<BasicRecord*> temp = pubdb->findRecordsInRange(0,9999);
         int i = 0;
         int z = 0;
-        std::string temp2 = pubPath.toStdString();
+        BasicRecord temp2 = pubdb->getHeaders();
         std::ofstream pubSave(pubPath.toStdString());
-        std::string temp3;
+        std::string temp3 = "";
+        while(i<temp2.size()-1){
+         temp3 = temp3 + temp2.at(i) + ",";
+         i++;
+        }
+        temp3 = temp3 + temp2.at(i) + "\n";
+        pubSave << temp3;
+        i=0;
         while(i<temp.size()){
             z = 0;
             temp3="";
-            while(z<26){
+            while(z<temp2.size()-1){
+                if(z==1||z==4){
+                    temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
+                    z++;
+                }
                 temp3 = temp3 + temp[i]->at(z) + ",";
                 z++;
             }
@@ -206,7 +239,7 @@ void MainWindow::on_actionSave_All_triggered() {
         while(i<temp.size()){
             z = 0;
             temp3 = "";
-            while(z<27){
+            while(z<temp2.size()-1){
                 if(z==1||z==4){
                     temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
                     z++;
