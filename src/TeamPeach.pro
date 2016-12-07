@@ -39,7 +39,8 @@ HEADERS += \
     gui/fundadvsearch.h \
     gui/presadvsearch.h \
     gui/pubadvsearch.h \
-    gui/load.h
+    gui/load.h \
+    gui/confirmation.h
 
 
 SOURCES += \
@@ -66,7 +67,8 @@ SOURCES += \
     gui/fundadvsearch.cpp \
     gui/presadvsearch.cpp \
     gui/pubadvsearch.cpp \
-    gui/load.cpp
+    gui/load.cpp \
+    gui/confirmation.cpp
 
 FORMS += \
     gui/customsort.ui \
@@ -76,7 +78,8 @@ FORMS += \
     gui/fundadvsearch.ui \
     gui/presadvsearch.ui \
     gui/pubadvsearch.ui \
-    gui/load.ui
+    gui/load.ui \
+    gui/confirmation.ui
 
 RESOURCES += \
     images.qrc
