@@ -11,11 +11,11 @@ CONFIG          += c++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
-TARGET = TeamPeach
+TARGET = TeamAres
 TEMPLATE = app
 
 DISTFILES += \
-    TeamPeach.pro.user
+    TeamAres.pro.user
 
 HEADERS += \
     gui/CustomSort.h \
