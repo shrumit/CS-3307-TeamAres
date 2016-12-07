@@ -174,10 +174,8 @@ private:
     void createDefaultSortOrder(int tabIndex);
     void makeTree(int tabIndex);
 
-    QWidget *generatePieChart(std::vector<std::pair<std::string, double>> elements);
-    QWidget *MainWindow::generatePieChartNew(std::vector<std::pair<QString, qreal>> elements, QString);
-    QWidget *generateBarChart(std::vector<std::pair<std::string, double>> elements);
-    QWidget *MainWindow::generateBarChartNew(std::vector<std::pair<QString, qreal>> elements, QString);
+    QWidget *generatePieChartNew(std::vector<std::pair<QString, qreal>> elements, QString title);
+    QWidget *generateBarChartNew(std::vector<std::pair<QString, qreal>> elements, QString title);
 
     bool handle_field_errors(std::vector<std::vector<std::string>*>& errors,
                              std::vector<std::string>& headers,

@@ -20,7 +20,6 @@ DISTFILES += \
 HEADERS += \
     gui/CustomSort.h \
     gui/ErrorEditDialog.h \
-    gui/piechartwidget.h \
     gui/mainwindow.h \
     database/CSVReader.h \
     database/RecordsManager.h \
@@ -32,7 +31,6 @@ HEADERS += \
     datamodel/GrantFundingTreeModel.h \
     datamodel/TeachingTreeModel.h \
     database/TestCSVReader.h \
-    gui/qcustomplot.h \
     tests/FileLoadTest.h \
     tests/InputValidityTest.h \
     tests/DateTest.h \
@@ -45,7 +43,6 @@ HEADERS += \
 SOURCES += \
     gui/CustomSort.cpp \
     gui/ErrorEditDialog.cpp \
-    gui/piechartwidget.cpp \
     gui/main.cpp \
     gui/mainwindow.cpp \
     database/CSVReader.cpp \
@@ -58,7 +55,6 @@ SOURCES += \
     datamodel/GrantFundingTreeModel.cpp \
     datamodel/TeachingTreeModel.cpp \
     database/TestCSVReader.cpp \
-    gui/qcustomplot.cpp \
     tests/InputValidityTest.cpp \
     tests/FileLoadTest.cpp \
     tests/DateTest.cpp \
