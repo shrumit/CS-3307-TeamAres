@@ -16,6 +16,7 @@ using namespace QtCharts;
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "CustomSort.h"
+#include "confirmation.h"
 //#include "ErrorEditDialog.h"
 
 #include "database/CSVReader.h"
@@ -89,6 +90,26 @@ MainWindow::MainWindow(QWidget *parent) :
     //Setup printer
     printer = new QPrinter();
 
+    std::ifstream save("save.txt");
+    std::string str;
+    QStringList files;
+    QString qstr;
+    std::getline(save, str);
+    if(str!=""){
+        load* puw = new load();
+        int ret = puw->exec();
+        if (ret) {
+            while(str!=""){
+                qstr = QString::fromStdString(str);
+                files << qstr;
+                std::getline(save, str);
+            }
+        }
+    }
+
+    save.close();
+    loadFileUnspecifiedType(files);
+
     dateChanged = {false, false, false, false};
 
 }
@@ -106,6 +127,124 @@ MainWindow::~MainWindow() {
     delete pubdb;
     delete teachdb;
     delete printer;
+}
+void MainWindow::on_actionSave_All_triggered() {
+    std::ofstream load("save.txt");
+    if(!fundPath.isEmpty()){
+        load<<fundPath.toStdString()<<"\n";
+        std::vector<BasicRecord*> temp = funddb->findRecordsInRange(0,9999);
+        int i = 0;
+        int z = 0;
+        BasicRecord temp2 = funddb->getHeaders();
+        std::ofstream fundSave(fundPath.toStdString());
+        std::string temp3 = "";
+        while(i<temp2.size()-1){
+         temp3 = temp3 + temp2.at(i) + ",";
+         i++;
+        }
+        temp3 = temp3 + temp2.at(i) + "\n";
+        fundSave << temp3;
+        i=0;
+        while(i<temp.size()){
+            z = 0;
+            temp3="";
+            while(z<temp[i]->size()){
+                temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
+                z++;
+            }
+            temp3 = temp3 + "\n";
+            fundSave << temp3;
+            i++;
+        }
+        fundSave.close();
+    }
+    if(!presPath.isEmpty()){
+        load<<presPath.toStdString()<<"\n";
+        std::vector<BasicRecord*> temp = presdb->findRecordsInRange(0,9999);
+        int i = 0;
+        int z = 0;
+        BasicRecord temp2 = presdb->getHeaders();
+        std::ofstream presSave(presPath.toStdString());
+        std::string temp3 = "";
+        while(i<temp2.size()-1){
+         temp3 = temp3 + temp2.at(i) + ",";
+         i++;
+        }
+        temp3 = temp3 + temp2.at(i) + "\n";
+        presSave << temp3;
+        i=0;
+        while(i<temp.size()){
+            z = 0;
+            temp3="";
+            while(z<temp[i]->size()){
+                temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
+                z++;
+            }
+            temp3 = temp3 + "\n";
+            presSave << temp3;
+            i++;
+        }
+        presSave.close();
+    }
+    if(!pubPath.isEmpty()){
+        load<<pubPath.toStdString()<<"\n";
+        std::vector<BasicRecord*> temp = pubdb->findRecordsInRange(0,9999);
+        int i = 0;
+        int z = 0;
+        BasicRecord temp2 = pubdb->getHeaders();
+        std::ofstream pubSave(pubPath.toStdString());
+        std::string temp3 = "";
+        while(i<temp2.size()-1){
+         temp3 = temp3 + temp2.at(i) + ",";
+         i++;
+        }
+        temp3 = temp3 + temp2.at(i) + "\n";
+        pubSave << temp3;
+        i=0;
+        while(i<temp.size()){
+            z = 0;
+            temp3="";
+            while(z<temp[i]->size()){
+                temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
+                z++;
+            }
+            temp3 = temp3 + "\n";
+            pubSave << temp3;
+            i++;
+        }
+        pubSave.close();
+    }
+    if(!teachPath.isEmpty()){
+        load<<teachPath.toStdString()<<"\n";
+        std::vector<BasicRecord*> temp = teachdb->findRecordsInRange(0,9999);
+        BasicRecord temp2 = teachdb->getHeaders();
+        int i = 0;
+        int z = 0;
+        std::ofstream teachSave(teachPath.toStdString());
+        std::string temp3 = "";
+        while(i<temp2.size()-1){
+         temp3 = temp3 + temp2.at(i) + ",";
+         i++;
+        }
+        temp3 = temp3 + temp2.at(i) + "\n";
+        teachSave << temp3;
+        i=0;
+        while(i<temp.size()){
+            z = 0;
+            temp3="";
+            while(z<temp[i]->size()){
+                temp3 = temp3 + "\"" + temp[i]->at(z) + "\"" + ',';
+                z++;
+            }
+            temp3 = temp3 + "\n";
+            teachSave << temp3;
+            i++;
+        }
+        teachSave.close();
+    }
+    Confirmation* puw = new Confirmation();
+    puw->exec();
+    load.close();
 }
 
 void MainWindow::on_actionLoad_file_triggered() {
@@ -504,7 +643,7 @@ void MainWindow::createDefaultSortOrder(int tabIndex) {
         break;
     case TEACH:
         // specify default sort order
-        defaultOrder << "Member Name" << "Program";
+        defaultOrder << "Member Name" << "Program" << "Division";
 
         // add default list to member variable
         allTeachOrders << defaultOrder;

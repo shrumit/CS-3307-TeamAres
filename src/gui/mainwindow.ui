@@ -227,7 +227,7 @@ p, li { white-space: pre-wrap; }
        <item row="7" column="1">
         <widget class="QTabWidget" name="categoryTab">
          <property name="toolTip">
-          <string>Export to pdf</string>
+          <string>Delete Sort Order</string>
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -422,6 +422,9 @@ p, li { white-space: pre-wrap; }
             <widget class="QPushButton" name="teach_delete_sort">
              <property name="enabled">
               <bool>false</bool>
+             </property>
+             <property name="toolTip">
+              <string>Delete Sort Order</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
@@ -1020,6 +1023,9 @@ p, li { white-space: pre-wrap; }
              <property name="enabled">
               <bool>false</bool>
              </property>
+             <property name="toolTip">
+              <string>Delete Sort Order</string>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
              </property>
@@ -1564,6 +1570,9 @@ p, li { white-space: pre-wrap; }
              <property name="enabled">
               <bool>false</bool>
              </property>
+             <property name="toolTip">
+              <string>Delete Sort Order</string>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
              </property>
@@ -1835,8 +1844,6 @@ p, li { white-space: pre-wrap; }
      <string>Save</string>
     </property>
     <addaction name="actionSave_All"/>
-    <addaction name="actionSave_SortList"/>
-    <addaction name="actionSave_Loaded_Files"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSave"/>
