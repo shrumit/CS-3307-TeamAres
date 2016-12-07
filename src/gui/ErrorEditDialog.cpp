@@ -96,6 +96,7 @@ void ErrorEditDialog::saveData() {
 
 void ErrorEditDialog::on_save_clicked()
 {
+
     bool search = true;
     //check if mandatory fields have been filled
     for (int row = 0; row < ui->tableWidget->rowCount() && search; row++) {
@@ -103,14 +104,28 @@ void ErrorEditDialog::on_save_clicked()
             std::vector<std::string>::iterator it = std::find(headerList.begin(), headerList.end(), mandatoryList[j]);
             int col = it - headerList.begin();
             QTableWidgetItem* item = ui->tableWidget->item(row, col);
+            //search becomes false if error file was missing
             if (item->text().compare("") == 0) {
-                QMessageBox::critical(this, "Error", "Mandatory fields are still empty.");
-                search = false;
+                    search = false;
+                }
             }
         }
-    }
-    if (search) {
+
+    if (search)
         saveData();
+    //there exists a mandatory cell that is empty
+    else{
+        QMessageBox prompt;
+        QString errorText = "Mandatory field(s) are still missing, still continue to save?";
+        prompt.setText(errorText);
+        prompt.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        prompt.setDefaultButton(QMessageBox::Yes);
+        prompt.setButtonText(QMessageBox::Yes, "Save");
+        prompt.setButtonText(QMessageBox::No, "Cancel");
+        prompt.setWindowIcon(QIcon(":/icon32.ico"));
+        prompt.exec();
+        if(QMessageBox::Yes)
+           saveData();
     }
 }
 
