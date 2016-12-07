@@ -44,7 +44,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Do  you wish to load a saved state?</string>
+    <string>Do you wish to load a saved state?</string>
    </property>
    <property name="textFormat">
     <enum>Qt::AutoText</enum>

@@ -639,7 +639,7 @@ void MainWindow::createDefaultSortOrder(int tabIndex) {
         break;
     case TEACH:
         // specify default sort order
-        defaultOrder << "Member Name" << "Program";
+        defaultOrder << "Member Name" << "Program" << "Division";
 
         // add default list to member variable
         allTeachOrders << defaultOrder;
