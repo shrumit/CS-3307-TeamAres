@@ -10,6 +10,9 @@
 #include <QPrinter>
 #include <QString>
 
+#include <QtCharts>
+using namespace QtCharts;
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "CustomSort.h"
@@ -19,6 +22,7 @@
 #include "database/QSortListIO.h"
 #include "database/RecordsManager.h"
 #include "datamodel/TreeModel.h"
+#include "datamodel/TreeItem.h"
 #include "datamodel/GrantFundingTreeModel.h"
 #include "datamodel/PresentationTreeModel.h"
 #include "datamodel/PublicationTreeModel.h"
@@ -184,7 +188,7 @@ void MainWindow::refresh(int tabIndex) {
         if (!teachPath.isEmpty()) {
             makeTree(TEACH);
             ui->teach_graph_stackedWidget->hide();
-            ui->teachGraphTitle->clear();
+//            ui->teachGraphTitle->clear();
         }
         break;
     }
@@ -592,7 +596,7 @@ void MainWindow::makeTree(int tabIndex) {
         // analyze the data into a tree
         currentTree->setupModel(yearStart, yearEnd, teachSortOrder, getFilterStartChar(TEACH), getFilterEndChar(TEACH), getSearchWord(TEACH), teachAdvArray);
 
-        ui->teach_pie_button->toggle();
+        ui->teach_radio1->toggle();
 
         break;
 
@@ -609,7 +613,7 @@ void MainWindow::makeTree(int tabIndex) {
         // analyze the data into a tree
         currentTree->setupModel(yearStart, yearEnd, pubSortOrder, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS), getSearchWord(PUBLICATIONS), pubAdvArray);
 
-        ui->pub_pie_button->toggle();
+        ui->pub_radio1->toggle();
 
         break;
     case PRESENTATIONS:
@@ -626,7 +630,7 @@ void MainWindow::makeTree(int tabIndex) {
         // analyze the data into a tree
         currentTree->setupModel(yearStart, yearEnd, presSortOrder, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS), getSearchWord(PRESENTATIONS), presAdvArray);
 
-        ui->pres_pie_button->toggle();
+        ui->pres_radio1->toggle();
 
         break;
 
@@ -643,7 +647,7 @@ void MainWindow::makeTree(int tabIndex) {
         // analyze the data into a tree
         currentTree->setupModel(yearStart, yearEnd, fundSortOrder, getFilterStartChar(FUNDING), getFilterEndChar(FUNDING), getSearchWord(FUNDING), fundAdvArray);
 
-        ui->fund_pie_button->toggle();
+        ui->fund_radio1->toggle();
 
         break;
     }
@@ -654,102 +658,6 @@ void MainWindow::makeTree(int tabIndex) {
     // set resize property to stretch
     currentView->header()->resizeSections(QHeaderView::Stretch);
 }
-
-void MainWindow::setupPieChart(PieChartWidget* pieChart, QListWidget *pieListWidget, std::vector<std::pair <std::string, double>> pieChartList) {
-    // draws the pie graph by sending piechartwidget a vector of name, presentation count
-    int pieSize = (int) pieChartList.size();
-    QVector<QColor> colorList(pieSize);
-    pieListWidget->clear();
-    for (int i = 0; i < pieSize; i++) {
-        colorList[i] = (QColor(qrand() % 256, qrand() % 256, qrand() % 256));
-        pieListWidget->addItem(QString::fromStdString(pieChartList[i].first));
-
-        // set legend colors
-        QPixmap pixmap(100, 100);
-        pixmap.fill(QColor(colorList[i]));
-        QIcon tempIcon(pixmap);
-        pieListWidget->item(i)->setIcon(tempIcon);
-    }
-
-    pieChart->setData(pieChartList, colorList); //passes vector list to piechartwidget
-}
-
-void MainWindow::setupBarChart(QCustomPlot *barChart, std::vector<std::pair <std::string, double>> barChartList) {
-    // create empty bar chart objects:
-    QCPBars *yLabels = new QCPBars(barChart->yAxis, barChart->xAxis);
-    barChart->addPlottable(yLabels);
-
-    // set names and colors:
-    QPen pen;
-    pen.setWidthF(1.2);
-    yLabels->setName("Type");
-    pen.setColor(QColor(255, 131, 0));
-    yLabels->setPen(pen);
-    yLabels->setBrush(QColor(255, 131, 0, 50));
-
-    //get label list
-    int barSize = (int) barChartList.size();
-    double maxCount = 0;
-    double scaledCount;
-    QVector<double> ticks;
-    QVector<QString> ylabels;
-    QVector<double> count;
-
-    //add label list to y axis labels
-    for (int i = 0; i < barSize; i++){
-        ticks << (i+1);
-        ylabels << QString::fromStdString(barChartList[i].first);
-        if (barChartList[i].second>1000000){
-            scaledCount = barChartList[i].second/1000000;
-        } else if (barChartList[i].second>1000){
-            scaledCount = barChartList[i].second/1000;
-        } else{
-            scaledCount = barChartList[i].second;
-        }
-        count <<scaledCount;
-
-        if (maxCount < barChartList[i].second)
-            maxCount = barChartList[i].second;
-    }
-
-    //setup Y Axis
-    barChart->yAxis->setAutoTicks(false);
-    barChart->yAxis->setAutoTickLabels(false);
-    barChart->yAxis->setTickVector(ticks);
-    barChart->yAxis->setTickVectorLabels(ylabels);
-    barChart->yAxis->setTickLabelPadding(1);
-    barChart->yAxis->setSubTickCount(0);
-    barChart->yAxis->setTickLength(0, 1);
-    barChart->yAxis->grid()->setVisible(true);
-    barChart->yAxis->setRange(0, barSize+1);
-
-    if(maxCount>1000000){
-        maxCount = maxCount/1000000;
-        barChart->xAxis->setLabel("Total (in Millions)");
-    }else if (maxCount>1000){
-        maxCount = maxCount/1000;
-        barChart->xAxis->setLabel("Total (in Thousands)");
-    }else{
-        barChart->xAxis->setLabel("Total");
-    }
-
-    // setup X Axis
-    barChart->xAxis->setAutoTicks(true);
-    barChart->xAxis->setRange(0,maxCount+(maxCount*.05));
-    barChart->xAxis->setAutoTickLabels(true);
-    barChart->xAxis->setAutoTickStep(true);
-    barChart->xAxis->grid()->setSubGridVisible(true);
-
-    QPen gridPen;
-    gridPen.setStyle(Qt::SolidLine);
-    gridPen.setColor(QColor(0, 0, 0, 25));
-    barChart->xAxis->grid()->setPen(gridPen);
-    gridPen.setStyle(Qt::DotLine);
-    barChart->xAxis->grid()->setSubGridPen(gridPen);
-
-    yLabels->setData(ticks, count);
-}
-
 
 void MainWindow::on_teach_new_sort_clicked() {
     if (teachdb != NULL) {
@@ -951,26 +859,18 @@ void MainWindow::on_fund_delete_sort_clicked() {
     }
 }
 
-void MainWindow::on_teach_scatter_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(3);}
-void MainWindow::on_teach_line_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(2);}
-void MainWindow::on_teach_bar_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(1);}
-void MainWindow::on_teach_pie_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(0);}
+void MainWindow::on_teach_radio1_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(0);}
+void MainWindow::on_teach_radio2_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(1);}
+void MainWindow::on_teach_radio3_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(2);}
 
-void MainWindow::on_pub_scatter_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(3);}
-void MainWindow::on_pub_line_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(2);}
-void MainWindow::on_pub_bar_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(1);}
-void MainWindow::on_pub_pie_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(0);}
+void MainWindow::on_pub_radio1_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(0);}
+void MainWindow::on_pub_radio2_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(1);}
 
-void MainWindow::on_pres_scatter_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(3);}
-void MainWindow::on_pres_line_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(2);}
-void MainWindow::on_pres_bar_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(1);}
-void MainWindow::on_pres_pie_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(0);}
+void MainWindow::on_pres_radio1_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(0);}
+void MainWindow::on_pres_radio2_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(1);}
 
-void MainWindow::on_fund_scatter_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(3);}
-void MainWindow::on_fund_line_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(2);}
-void MainWindow::on_fund_bar_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(1);}
-void MainWindow::on_fund_pie_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(0);}
-
+void MainWindow::on_fund_radio1_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(0);}
+void MainWindow::on_fund_radio2_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(1);}
 
 QString MainWindow::indexToString(int i){
     QString check;
@@ -1064,10 +964,9 @@ bool MainWindow::load_teach(QString path, bool multi_file) {
         ui->teach_new_sort->setEnabled(true);
         ui->teach_filter_from->setEnabled(true);
         ui->teach_filter_to->setEnabled(true);
-        ui->teach_pie_button->setEnabled(true);
-        ui->teach_bar_button->setEnabled(true);
-        ui->teach_line_button->setEnabled(true);
-        ui->teach_scatter_button->setEnabled(true);
+        ui->teach_radio1->setEnabled(true);
+        ui->teach_radio2->setEnabled(true);
+        ui->teach_radio3->setEnabled(true);
         ui->teach_to_label->setEnabled(true);
         ui->teach_sort_label->setEnabled(true);
         ui->teach_filter->setEnabled(true);
@@ -1119,10 +1018,8 @@ bool MainWindow::load_pub(QString path, bool multi_file) {
         ui->pub_new_sort->setEnabled(true);
         ui->pub_filter_from->setEnabled(true);
         ui->pub_filter_to->setEnabled(true);
-        ui->pub_pie_button->setEnabled(true);
-        ui->pub_bar_button->setEnabled(true);
-        ui->pub_line_button->setEnabled(true);
-        ui->pub_scatter_button->setEnabled(true);
+        ui->pub_radio1->setEnabled(true);
+        ui->pub_radio2->setEnabled(true);
         ui->pub_to_label->setEnabled(true);
         ui->pub_sort_label->setEnabled(true);
         ui->pub_filter->setEnabled(true);
@@ -1173,10 +1070,8 @@ bool MainWindow::load_pres(QString path, bool multi_file) {
         ui->pres_new_sort->setEnabled(true);
         ui->pres_filter_from->setEnabled(true);
         ui->pres_filter_to->setEnabled(true);
-        ui->pres_pie_button->setEnabled(true);
-        ui->pres_bar_button->setEnabled(true);
-        ui->pres_line_button->setEnabled(true);
-        ui->pres_scatter_button->setEnabled(true);
+        ui->pres_radio1->setEnabled(true);
+        ui->pres_radio2->setEnabled(true);
         ui->pres_to_label->setEnabled(true);
         ui->pres_sort_label->setEnabled(true);
         ui->pres_filter->setEnabled(true);
@@ -1227,10 +1122,8 @@ bool MainWindow::load_fund(QString path, bool multi_file) {
         ui->fund_new_sort->setEnabled(true);
         ui->fund_filter_from->setEnabled(true);
         ui->fund_filter_to->setEnabled(true);
-        ui->fund_pie_button->setEnabled(true);
-        ui->fund_bar_button->setEnabled(true);
-        ui->fund_line_button->setEnabled(true);
-        ui->fund_scatter_button->setEnabled(true);
+        ui->fund_radio1->setEnabled(true);
+        ui->fund_radio2->setEnabled(true);
         ui->fund_to_label->setEnabled(true);
         ui->fund_sort_label->setEnabled(true);
         ui->fund_filter->setEnabled(true);
@@ -1300,209 +1193,191 @@ void MainWindow::on_categoryTab_currentChanged() {
     }
 }
 
+QWidget *MainWindow::generatePieChartNew(std::vector<std::pair<QString, qreal>> elements, QString title) {
+    QPieSeries *series = new QPieSeries();
+    for (auto e : elements){
+       series->append(e.first, e.second);
+    }
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle(title);
+
+    QChartView *chartView = new QChartView();
+    chartView->setChart(chart);
+    return chartView;
+}
+
+QWidget *MainWindow::generateBarChartNew(std::vector<std::pair<QString, qreal>> elements, QString title) {
+    QHorizontalBarSeries *series = new QHorizontalBarSeries();
+    QStringList categories;
+
+    for (const std::pair<QString, qreal> e : elements) {
+       categories << e.first;
+       QBarSet *set = new QBarSet(e.first);
+       *set << e.second;
+       series->append(set);
+    }
+
+    QChart *chart = new QChart();
+
+    QBarCategoryAxis *axisY = new QBarCategoryAxis();
+    axisY->append(categories);
+    chart->setAxisY(axisY, series);
+
+    chart->addSeries(series);
+    chart->setTitle(title);
+
+    QChartView *chartView = new QChartView();
+    chartView->setChart(chart);
+    return chartView;
+}
+
 void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
-    QString clickedName = index.data(Qt::DisplayRole).toString();
-    if (clickedName==teachClickedName || index.column()!=0) { return;}
+    void* clickedName = index.internalPointer();
 
-    std::vector<std::string> parentsList;
-    QModelIndex current = index;
-    QString name;
-    while (true) {
-        name = current.data(Qt::DisplayRole).toString();
-        if(name!="") {
-            auto it = parentsList.begin();
-            it = parentsList.insert(it, name.toStdString());
-        } else {
-            break;
-        }
-        current = current.parent();
+    // reject if selected row has been clicked again
+    if (clickedName==teachClickedName || index.column()!=0)
+        return;
+
+    teachClickedName = clickedName;
+    TreeItem *item = static_cast<TreeItem*> (index.internalPointer());
+    std::vector<std::pair <QString, qreal>> numList;
+    std::vector<std::pair <QString, qreal>> hourList;
+    std::vector<std::pair <QString, qreal>> studentList;
+
+    // Generate list of data to send to charts
+    for (int i = 0; i < item->childCount(); i++) {
+        numList.push_back(std::make_pair(item->child(i)->data(0).toString(), item->child(i)->data(1).toReal()));
+        hourList.push_back(std::make_pair(item->child(i)->data(0).toString(), item->child(i)->data(2).toReal()));
+        studentList.push_back(std::make_pair(item->child(i)->data(0).toString(), item->child(i)->data(3).toReal()));
     }
 
-    if (parentsList.size()!=teachSortOrder.size()) {
-        teachClickedName = clickedName;
-        std::vector<std::string> sortOrder(teachSortOrder.begin(), teachSortOrder.begin()+parentsList.size()+1);
-        std::vector<std::pair <std::string, int>> list =
-                teachdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH), getSearchWord(TEACH), teachAdvArray);
-        std::vector<std::pair <std::string, double>> chartList;
-        for (int i = 0; i < (int) list.size(); i++) {
-            chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
-        }
-
-        if (!chartList.empty()) {
-            ui->teachBarChart->clearPlottables();
-            setupBarChart(ui->teachBarChart, chartList);
-            ui->teachBarChart->replot();
-
-            setupPieChart(ui->teachPieChart, ui->teachPieList, chartList);
-
-            if (parentsList.size()>1) {
-                ui->teachGraphTitle->setText("Total " + clickedName + " Teaching by " +
-                                             QString::fromStdString(teachSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
-            } else {
-                ui->teachGraphTitle->setText("Total Teaching by " + QString::fromStdString(parentsList[0]));
-            }
-            ui->teach_graph_stackedWidget->show();
-        }
-    } else {
-        ui->teach_graph_stackedWidget->hide();
-        ui->teachGraphTitle->clear();
-        teachClickedName.clear();
+    QStackedWidget *sw = ui->teach_graph_stackedWidget;
+    int savedIndex = sw->currentIndex(); // save index of currently selected widget
+    // clean existing widgets
+    for(int i = sw->count(); i >= 0; i--) {
+        QWidget* widget = sw->widget(i);
+        sw->removeWidget(widget);
+        widget->deleteLater();
     }
+
+    // inserts charts and display
+    sw->insertWidget(0, generatePieChartNew(numList, "Number of Teaching Items by Category"));
+    sw->insertWidget(1, generatePieChartNew(hourList, "Number of Hours by Category"));
+    sw->insertWidget(2, generateBarChartNew(studentList, "Number of Student by Category"));
+    sw->show();
+    sw->setCurrentIndex(savedIndex);
 }
 
 void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
-    QString clickedName = index.data(Qt::DisplayRole).toString();
-    if (clickedName==pubClickedName || index.column()!=0) { return;}
+    void* clickedName = index.internalPointer();
 
-    std::vector<std::string> parentsList;
-    QModelIndex current = index;
-    QString name;
-    while (true) {
-        name = current.data(Qt::DisplayRole).toString();
-        if(name!="") {
-            auto it = parentsList.begin();
-            it = parentsList.insert(it, name.toStdString());
-        } else {
-            break;
-        }
-        current = current.parent();
+    // reject if selected row has been clicked again
+    if (clickedName==pubClickedName || index.column()!=0)
+        return;
+
+    pubClickedName = clickedName;
+    TreeItem *item = static_cast<TreeItem*> (index.internalPointer());
+    std::vector<std::pair <QString, qreal>> numList;
+
+    // Generate list of data to send to charts
+    for (int i = 0; i < item->childCount(); i++) {
+        numList.push_back(std::make_pair(item->child(i)->data(0).toString(), item->child(i)->data(1).toReal()));
     }
 
-    if (parentsList.size()!=pubSortOrder.size()) {
-        pubClickedName = clickedName;
-        std::vector<std::string> sortOrder(pubSortOrder.begin(), pubSortOrder.begin()+parentsList.size()+1);
-        std::vector<std::pair <std::string, int>> list =
-                pubdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS), getSearchWord(PUBLICATIONS), pubAdvArray);
-        std::vector<std::pair <std::string, double>> chartList;
-        for (int i = 0; i < (int) list.size(); i++) {
-            chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
-        }
-
-        if (!chartList.empty()) {
-            ui->pubBarChart->clearPlottables();
-            setupBarChart(ui->pubBarChart, chartList);
-            ui->pubBarChart->replot();
-
-            setupPieChart(ui->pubPieChart, ui->pubPieList, chartList);
-
-            if (parentsList.size()>1) {
-                ui->pubGraphTitle->setText("Total " + clickedName + " Publications by " +
-                                           QString::fromStdString(pubSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
-            } else {
-                ui->pubGraphTitle->setText("Total Publications by " + QString::fromStdString(parentsList[0]));
-            }
-            ui->pub_graph_stackedWidget->show();
-        }
-    } else {
-        ui->pub_graph_stackedWidget->hide();
-        ui->pubGraphTitle->clear();
-        pubClickedName.clear();
+    QStackedWidget *sw = ui->pub_graph_stackedWidget;
+    int savedIndex = sw->currentIndex(); // save index of currently selected widget
+    // clean existing widgets
+    for(int i = sw->count(); i >= 0; i--) {
+        QWidget* widget = sw->widget(i);
+        sw->removeWidget(widget);
+        widget->deleteLater();
     }
+
+    // inserts charts and display
+    sw->insertWidget(0, generatePieChartNew(numList, "Number of Publications"));
+    sw->insertWidget(1, generateBarChartNew(numList, "Number of Publications"));
+    sw->show();
+    sw->setCurrentIndex(savedIndex);
 }
 
 void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
-    QString clickedName = index.data(Qt::DisplayRole).toString();
-    if (clickedName==presClickedName || index.column()!=0) { return;}
+    void* clickedName = index.internalPointer();
 
-    std::vector<std::string> parentsList;
-    QModelIndex current = index;
-    QString name;
-    while (true) {
-        name = current.data(Qt::DisplayRole).toString();
-        if(name!="") {
-            auto it = parentsList.begin();
-            it = parentsList.insert(it, name.toStdString());
-        } else {
-            break;
-        }
-        current = current.parent();
+    // reject if selected row has been clicked again
+    if (clickedName==presClickedName || index.column()!=0)
+        return;
+
+    presClickedName = clickedName;
+    TreeItem *item = static_cast<TreeItem*> (index.internalPointer());
+    std::vector<std::pair <QString, qreal>> numList;
+
+    // Generate list of data to send to charts
+    for (int i = 0; i < item->childCount(); i++) {
+        numList.push_back(std::make_pair(item->child(i)->data(0).toString(), item->child(i)->data(1).toReal()));
     }
 
-    if (parentsList.size()!=presSortOrder.size()) {
-        presClickedName = clickedName;
-        std::vector<std::string> sortOrder(presSortOrder.begin(), presSortOrder.begin()+parentsList.size()+1);
-        std::vector<std::pair <std::string, int>> list =
-                presdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS), getSearchWord(PRESENTATIONS), presAdvArray);
-        std::vector<std::pair <std::string, double>> chartList;
-        for (int i = 0; i < (int) list.size(); i++) {
-            chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
-        }
-
-        if (!chartList.empty()) {
-            ui->presBarChart->clearPlottables();
-            setupBarChart(ui->presBarChart, chartList);
-            ui->presBarChart->replot();
-
-            setupPieChart(ui->presPieChart, ui->presPieList, chartList);
-
-            if (parentsList.size()>1) {
-                ui->presGraphTitle->setText("Total " + clickedName + " Presentations by " +
-                                            QString::fromStdString(presSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
-            } else {
-                ui->presGraphTitle->setText("Total Presentations by " + QString::fromStdString(parentsList[0]));
-            }
-            ui->pres_graph_stackedWidget->show();
-        }
-    } else {
-        ui->pres_graph_stackedWidget->hide();
-        ui->presGraphTitle->clear();
-        presClickedName.clear();
+    QStackedWidget *sw = ui->pres_graph_stackedWidget;
+    int savedIndex = sw->currentIndex(); // save index of currently selected widget
+    // clean existing widgets
+    for(int i = sw->count(); i >= 0; i--) {
+        QWidget* widget = sw->widget(i);
+        sw->removeWidget(widget);
+        widget->deleteLater();
     }
+
+    // inserts charts and display
+    sw->insertWidget(0, generatePieChartNew(numList, "Number of Presentations"));
+    sw->insertWidget(1, generateBarChartNew(numList, "Number of Presentations"));
+    sw->show();
+    sw->setCurrentIndex(savedIndex);
 }
 
 void MainWindow::on_fundTreeView_clicked(const QModelIndex &index) {
-    QString clickedName = index.data(Qt::DisplayRole).toString();
-    if (clickedName==fundClickedName || index.column()!=0) { return;}
+    void* clickedName = index.internalPointer();
 
-    std::vector<std::string> parentsList;
-    QModelIndex current = index;
-    QString name;
-    while (true) {
-        name = current.data(Qt::DisplayRole).toString();
-        if(name!="") {
-            auto it = parentsList.begin();
-            it = parentsList.insert(it, name.toStdString());
-        } else {
-            break;
-        }
-        current = current.parent();
+    // reject if selected row has been clicked again
+    if (clickedName==fundClickedName || index.column()!=0)
+        return;
+
+    fundClickedName = clickedName;
+    TreeItem *item = static_cast<TreeItem*> (index.internalPointer());
+    std::vector<std::pair <QString, qreal>> numList;
+    std::vector<std::pair <QString, qreal>> moneyList;
+
+    // Generate list of data to send to charts
+    for (int i = 0; i < item->childCount(); i++) {
+        numList.push_back(std::make_pair(item->child(i)->data(0).toString(), item->child(i)->data(1).toReal()));
+
+        QString dollar = item->child(i)->data(2).toString();
+        dollar = dollar.remove(',');
+        dollar = dollar.remove('$');
+        moneyList.push_back(std::make_pair(item->child(i)->data(0).toString(), (qreal) dollar.toDouble()));
     }
 
-    if (parentsList.size()!=fundSortOrder.size()) {
-        if (clickedName != fundClickedName) {
-            fundClickedName = clickedName;
-            std::vector<std::string> sortOrder(fundSortOrder.begin(), fundSortOrder.begin()+parentsList.size()+1);
-            std::vector<std::pair <std::string, double>> chartList =
-                    funddb->getTotalsTuple(yearStart, yearEnd, sortOrder, parentsList, "Total Amount", getFilterStartChar(FUNDING), getFilterEndChar(FUNDING), getSearchWord(FUNDING), fundAdvArray);
+    QStackedWidget *sw = ui->fund_graph_stackedWidget;
+    int savedIndex = sw->currentIndex(); // save index of currently selected widget
 
-            if (!chartList.empty()) {
-                ui->fundBarChart->clearPlottables();
-                setupBarChart(ui->fundBarChart, chartList);
-                ui->fundBarChart->replot();
-
-                setupPieChart(ui->fundPieChart, ui->fundPieList, chartList);
-
-                if (parentsList.size()>1) {
-                    ui->fundGraphTitle->setText("Total " + clickedName + " Grants & Funding by " +
-                                                QString::fromStdString(fundSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
-                } else {
-                    ui->fundGraphTitle->setText("Total Grants & Funding by " + QString::fromStdString(parentsList[0]));
-                }
-                ui->fund_graph_stackedWidget->show();
-            }
-        } else {
-            ui->fund_graph_stackedWidget->hide();
-            ui->fundGraphTitle->clear();
-            fundClickedName.clear();
-        }
+    // clean existing widgets
+    for(int i = sw->count(); i >= 0; i--) {
+        QWidget* widget = sw->widget(i);
+        sw->removeWidget(widget);
+        widget->deleteLater();
     }
+
+    // inserts charts and display
+    sw->insertWidget(0, generatePieChartNew(numList, "Number of Funding Items"));
+    sw->insertWidget(1, generateBarChartNew(moneyList, "Amount of Funding"));
+    sw->show();
+    sw->setCurrentIndex(savedIndex);
 }
 
 void MainWindow::on_teachPrintButton_clicked()
 {
     QPrintDialog printDialog(printer, this);
     if (printDialog.exec() == QDialog::Accepted) {
-        QCPPainter painter;
+        QPainter painter;
         painter.begin(printer);
         ui->teachChartFrame->render(&painter);
     }
@@ -1512,7 +1387,7 @@ void MainWindow::on_fundPrintButton_clicked()
 {
     QPrintDialog printDialog(printer, this);
     if (printDialog.exec() == QDialog::Accepted) {
-        QCPPainter painter;
+        QPainter painter;
         painter.begin(printer);
         ui->fundChartFrame->render(&painter);
     }
@@ -1522,7 +1397,7 @@ void MainWindow::on_presPrintButton_clicked()
 {
     QPrintDialog printDialog(printer, this);
     if (printDialog.exec() == QDialog::Accepted) {
-        QCPPainter painter;
+        QPainter painter;
         painter.begin(printer);
         ui->presChartFrame->render(&painter);
     }
@@ -1532,7 +1407,7 @@ void MainWindow::on_pubPrintButton_clicked()
 {
     QPrintDialog printDialog(printer, this);
     if (printDialog.exec() == QDialog::Accepted) {
-        QCPPainter painter;
+        QPainter painter;
         painter.begin(printer);
         ui->pubChartFrame->render(&painter);
     }

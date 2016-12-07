@@ -32,10 +32,10 @@
  **
  ****************************************************************************/
 
-/* 
+/*
  * Provides a simple tree model to show how to create and use hierarchical
  * models.
- * 
+ *
  * CS3307, Team Peach
  */
 #include "database/RecordsManager.h"
@@ -168,7 +168,7 @@ int TreeModel::rowCount(const QModelIndex &parent) const {
 }
 
 /*
- * Sets up the initial data in the model. 
+ * Sets up the initial data in the model.
  */
 void TreeModel::setupModelData(const QStringList &lines, TreeItem *parent) {
     QList<TreeItem*> parents;
