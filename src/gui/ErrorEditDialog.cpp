@@ -36,26 +36,25 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
     ui->tableWidget->setRowCount((int) errors.size());
     ui->tableWidget->setColumnCount((int) headers.size());
 
+    // Set table headers
     QStringList listHeaders;
     for (int i = 0; i < (int) headers.size(); i++) {
         listHeaders << headers[i].c_str();
     }
-
     ui->tableWidget->setHorizontalHeaderLabels(listHeaders);
+
+    // Set table rows
     QTableWidgetItem* item;
     std::vector<std::vector<std::string>*>::iterator it;
     int row = 0;
     for (it = errors.begin(); it != errors.end(); it++) {
         for (int col = 0; col < (int) headers.size() && col < (int) (*it)->size(); col++) {
             item = new QTableWidgetItem();
-            Qt::ItemFlags flag = item->flags();
-            item->setFlags(Qt::ItemIsSelectable);
             item->setText((*it)->at(col).c_str());
             for (int i = 0; i < (int) mandatory.size(); i++) {
                 if (mandatory[i].compare(headers.at(col)) == 0
                         && (*it)->at(col).compare("") == 0) {
                     item->setBackground(error_brush);
-                    item->setFlags(flag);
                     error_cells.insert(std::make_tuple(row,col));
                 }
             }
@@ -63,7 +62,7 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
         }
         row++;
     }
-    qDebug() << "errors:" << errors.size() << " / error_cells:" << error_cells.size();
+
     error_cells_original = error_cells; // preserve a copy of the original set
     ui->errorLabel->setText(QString::number(error_cells.size()) + "  mandatory cells missing");
     error_lock = false;
@@ -94,8 +93,8 @@ void ErrorEditDialog::saveData() {
     accept();
 }
 
-void ErrorEditDialog::on_save_clicked()
-{
+void ErrorEditDialog::on_save_clicked() {
+
     bool search = true;
     //check if mandatory fields have been filled
     for (int row = 0; row < ui->tableWidget->rowCount() && search; row++) {
@@ -103,14 +102,28 @@ void ErrorEditDialog::on_save_clicked()
             std::vector<std::string>::iterator it = std::find(headerList.begin(), headerList.end(), mandatoryList[j]);
             int col = it - headerList.begin();
             QTableWidgetItem* item = ui->tableWidget->item(row, col);
+            //search becomes false if error file was missing
             if (item->text().compare("") == 0) {
-                QMessageBox::critical(this, "Error", "Mandatory fields are still empty.");
-                search = false;
+                    search = false;
+                }
             }
         }
-    }
-    if (search) {
+
+    if (search)
         saveData();
+    //there exists a mandatory cell that is empty
+    else{
+        QMessageBox prompt;
+        QString errorText = "Mandatory field(s) are still missing, still continue to save?";
+        prompt.setText(errorText);
+        prompt.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        prompt.setDefaultButton(QMessageBox::Yes);
+        prompt.setButtonText(QMessageBox::Yes, "Save");
+        prompt.setButtonText(QMessageBox::No, "Cancel");
+        prompt.setWindowIcon(QIcon(":/icon32.ico"));
+        prompt.exec();
+        if(QMessageBox::Yes)
+           saveData();
     }
 }
 
@@ -197,8 +210,6 @@ void ErrorEditDialog::on_tableWidget_itemChanged(QTableWidgetItem *item)
         item->setBackground(modif_brush);
         ui->errorLabel->setText(QString::number(error_cells.size()) + " mandatory cells missing");
     }
-
-    qDebug() << item->column() << "," << item->row();
 }
 
 void ErrorEditDialog::on_cancel_clicked()
