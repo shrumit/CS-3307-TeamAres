@@ -13,6 +13,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "CustomSort.h"
+#include "confirmation.h"
 //#include "ErrorEditDialog.h"
 
 #include "database/CSVReader.h"
@@ -237,7 +238,8 @@ void MainWindow::on_actionSave_All_triggered() {
         }
         teachSave.close();
     }
-
+    Confirmation* puw = new Confirmation();
+    puw->exec();
     load.close();
 }
 

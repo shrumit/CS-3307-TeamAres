@@ -10,6 +10,7 @@
 #include "presadvsearch.h"
 #include "pubadvsearch.h"
 #include "load.h"
+#include "confirmation.h"
 #include <iostream>
 #include <fstream>
 
