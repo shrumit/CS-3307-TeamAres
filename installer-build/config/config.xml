@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>Team Ares Installer</Name>
+    <Version>1.0</Version>
+    <Title>Start Menu Shortcut TeamAres</Title>
+    <Publisher>Qt-Project</Publisher>
+    <!-- Directory name is used in component.xml -->
+    <StartMenuDir>TeamAres</StartMenuDir>
+    <TargetDir>@HomeDir@/TeamAres</TargetDir>
+</Installer>
