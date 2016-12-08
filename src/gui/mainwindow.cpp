@@ -247,6 +247,9 @@ void MainWindow::on_actionSave_All_triggered() {
     load.close();
 }
 
+//this function is called when load file is clicked from the context menu
+//User can select any number of files
+//the filepaths are then sent to loadFileUnspecifiedType
 void MainWindow::on_actionLoad_file_triggered() {
     QStringList filePaths = QFileDialog::getOpenFileNames(this,
                                                           "Select one or more files to load",
@@ -255,6 +258,7 @@ void MainWindow::on_actionLoad_file_triggered() {
     loadFileUnspecifiedType(filePaths);
 }
 
+//This function is given filePaths of csv files.
 void MainWindow::loadFileUnspecifiedType(QStringList filePaths) {
     if (filePaths.size() > 0) {
         const int NUM_TABS = 4;
@@ -594,6 +598,7 @@ int MainWindow::checkFile(int index, QString filePath) {
     return EXIT_SUCCESS;
 }
 
+//default sort order!
 void MainWindow::createDefaultSortOrder(int tabIndex) {
     QStringList defaultOrder;
     defaultOrder << "Default";
@@ -1141,6 +1146,7 @@ bool MainWindow::load_teach(QString path, bool multi_file) {
     }
     return false;
 }
+
 
 void MainWindow::on_pub_load_file_clicked() {
     QString path = load_file();
