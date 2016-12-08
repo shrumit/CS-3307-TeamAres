@@ -1,0 +1,4 @@
+delete this file once you place your data in the folder
+
+this exists as git does not allow empty directories in the repo
+
