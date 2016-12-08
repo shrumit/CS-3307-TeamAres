@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT              += testlib
+#QT              += testlib
 QT              += core gui
 QT              += charts
 CONFIG          += c++11
@@ -31,9 +31,9 @@ HEADERS += \
     datamodel/GrantFundingTreeModel.h \
     datamodel/TeachingTreeModel.h \
     database/TestCSVReader.h \
-    tests/FileLoadTest.h \
-    tests/InputValidityTest.h \
-    tests/DateTest.h \
+#    tests/FileLoadTest.h \
+#    tests/InputValidityTest.h \
+#    tests/DateTest.h \
     gui/teachadvsearch.h \
     gui/fundadvsearch.h \
     gui/presadvsearch.h \
@@ -57,9 +57,9 @@ SOURCES += \
     datamodel/GrantFundingTreeModel.cpp \
     datamodel/TeachingTreeModel.cpp \
     database/TestCSVReader.cpp \
-    tests/InputValidityTest.cpp \
-    tests/FileLoadTest.cpp \
-    tests/DateTest.cpp \
+#    tests/InputValidityTest.cpp \
+#    tests/FileLoadTest.cpp \
+#    tests/DateTest.cpp \
     gui/teachadvsearch.cpp \
     gui/fundadvsearch.cpp \
     gui/presadvsearch.cpp \

@@ -6,9 +6,11 @@
 #include "gui/mainwindow.h"
 #include "database/TestCSVReader.h"
 
+/* commenting out for release build
 #include "tests/FileLoadTest.h"
 #include "tests/InputValidityTest.h"
 #include "tests/DateTest.h"
+*/
 
 using namespace std;
 
@@ -18,7 +20,7 @@ int main(int argc, char *argv[]) {
     MainWindow w;
 
     if (test) {
-
+        /* commenting out for release build
         FileLoadTest *test_flt = new FileLoadTest();
         QTest::qExec(test_flt);
 
@@ -31,7 +33,7 @@ int main(int argc, char *argv[]) {
         // If it produces errors, please comment it out
         // DateTest *test_dt = new DateTest();
         // QTest::qExec(test_dt);
-
+        */
 
         //old test code that came with project
 
